@@ -1,10 +1,18 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Item : MonoBehaviour {
+public abstract class Item {
 
-	// Use this for initialization
-	void Start () {
+    public enum ItemType
+    {
+        Collectable,
+        Weapon
+    }
+
+    public ItemType ItemTypeMember;
+
+    // Use this for initialization
+    void Start () {
 	
 	}
 	

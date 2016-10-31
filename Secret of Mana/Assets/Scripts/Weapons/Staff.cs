@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Staff : MonoBehaviour {
+public class Staff : Weapon {
 
 	// Use this for initialization
 	void Start () {

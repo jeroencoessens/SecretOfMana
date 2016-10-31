@@ -1,10 +1,20 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Armor : MonoBehaviour {
+public class Armor : Item {
 
-	// Use this for initialization
-	void Start () {
+    public enum ArmorType
+    {
+        Helmet,
+        Chestplate,
+        Pants,
+        Boots
+    }
+
+    public ArmorType ArmorPiece;
+
+    // Use this for initialization
+    void Start () {
 	
 	}
 	

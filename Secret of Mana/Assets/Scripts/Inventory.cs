@@ -13,6 +13,6 @@ public class Inventory {
 	
 	// Update is called once per frame
 	void Update () {
-	
+        
 	}
 }

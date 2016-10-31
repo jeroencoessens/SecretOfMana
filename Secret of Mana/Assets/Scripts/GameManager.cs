@@ -1,7 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class GameManager : MonoBehaviour {
+public class GameManager : MonoBehaviour
+{
+    // Inventory holder
+    public Inventory Inventory;
 
 	// Use this for initialization
 	void Start () {
@@ -12,4 +15,9 @@ public class GameManager : MonoBehaviour {
 	void Update () {
 	
 	}
+
+    void CreateManagers()
+    {
+        // Character and UI managers
+    }
 }

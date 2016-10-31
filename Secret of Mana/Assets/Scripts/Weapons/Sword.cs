@@ -1,7 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Sword : MonoBehaviour {
+public class Sword : Weapon
+{
+
+    private int IncreaseAttack = 50;
 
 	// Use this for initialization
 	void Start () {

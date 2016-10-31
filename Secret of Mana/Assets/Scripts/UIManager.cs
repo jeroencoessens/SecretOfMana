@@ -12,4 +12,9 @@ public class UIManager {
 	void Update () {
 	
 	}
+
+    void InitializePanels()
+    {
+        
+    }
 }

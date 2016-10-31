@@ -7,9 +7,19 @@ public class InventoryPanel : ManaPanel {
 	void Start () {
 	
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+
+    // Update is called once per frame
+    void Update()
+    {
+
+        if (Input.GetKey(KeyCode.I))
+        {
+            OpenPanel();
+        }
+    }
+
+    void OpenPanel()
+    {
+
+    }
 }
