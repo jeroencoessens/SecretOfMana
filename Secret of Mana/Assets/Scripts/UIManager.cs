@@ -3,7 +3,6 @@ using System.Collections;
 
 public class UIManager
 {
-
     public InventoryPanel InvPanel;
 
     public CharacterPanel CharPanel;

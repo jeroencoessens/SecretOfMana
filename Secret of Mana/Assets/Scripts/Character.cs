@@ -20,6 +20,9 @@ public abstract class Character {
 
     public int DefenseStat = 250;
 
+    // for HUD
+    public int Tag = 1;
+
     public class PlayerCharacter : Character
     {
         
