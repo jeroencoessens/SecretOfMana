@@ -4,11 +4,14 @@ using System.Collections;
 public class GameManager : MonoBehaviour
 {
     // Inventory holder
-    public Inventory Inventory;
+    public static Inventory Inventory;
 
 	// Use this for initialization
 	void Start () {
+        CreateManagers();
 	
+        // Create 3 characters and couple of enemies
+
 	}
 	
 	// Update is called once per frame
