@@ -10,14 +10,4 @@ public abstract class Item {
     }
 
     public ItemType ItemTypeMember;
-
-    // Use this for initialization
-    void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 }

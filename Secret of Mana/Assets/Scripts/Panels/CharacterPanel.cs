@@ -14,6 +14,12 @@ public class CharacterPanel : ManaPanel
     public Text HPText;
     public Text MPText;
 
+    // Armor and Weapon stats
+    public Text AttackText;
+    public Text DefenseText;
+
+    public Text ArmorText;
+
     // Update is called once per frame
     void Update()
     {
@@ -47,5 +53,8 @@ public class CharacterPanel : ManaPanel
         HPText.text = "HP: " + currentCharacter.HealthPoints;
         MPText.text = "MP: " + currentCharacter.ManaPoints;
 
+        AttackText.text = "ATT: " + currentCharacter.AttackStat;
+        DefenseText.text = "DEF: " + currentCharacter.DefenseStat;
+        ArmorText.text = "Armorpiece: " + currentCharacter.CharacterArmor.ArmorPiece;
     }
 }

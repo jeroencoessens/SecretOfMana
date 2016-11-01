@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public abstract class Character {
+public class Character {
 
     // Character stats ( Default )
-    public string Name = "Default Character";
+    public string Name = "Mister Default";
+
+    public string Role = "Hero";
 
     public int HealthPoints = 100;
 
@@ -25,11 +27,23 @@ public abstract class Character {
 
     public class PlayerCharacter : Character
     {
-        
+
     }
 
     public class EnemyCharacter : Character
     {
 
     }
+
+    public void UpdateAttackStat()
+    {
+        AttackStat += CharacterWeapon.AttackBonus;
+    }
+
+    public void UpdateDefensStat()
+    {
+        DefenseStat += CharacterArmor.DefenseBonus;
+    }
 }
+
+

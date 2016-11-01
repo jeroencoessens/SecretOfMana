@@ -3,10 +3,11 @@ using System.Collections;
 
 public class Sword : Weapon
 {
-    private int IncreaseAttack = 50;
+    private int IncreaseAttack = 60;
 
 	public Sword ()
 	{
 	    Name = "Sword";
-	}
+        AttackBonus = IncreaseAttack;
+    }
 }
