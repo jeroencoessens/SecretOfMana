@@ -10,11 +10,12 @@ public class GameManager : MonoBehaviour
     private CharacterManager CharManager;
     private UIManager UIManager;
 
+    // Camera
+    public GameObject MainCamera;
+
     // Use this for initialization
     void Start () {
         CreateManagers();
-	
-        // Create 3 characters and couple of enemies
 	}
 	
 	// Update is called once per frame
@@ -27,8 +28,8 @@ public class GameManager : MonoBehaviour
     {
         // Character and UI managers
         CharManager = new CharacterManager();
-        CharManager.Init();
         CreateCharacters();
+        CharManager.Init();
 
         UIManager = new UIManager();
     }
@@ -37,15 +38,15 @@ public class GameManager : MonoBehaviour
     {
         // Character 1 = Eddy - Sword
         var eddy = new Character.PlayerCharacter();
-        CreateSpecificCharacter(eddy, 120, 2, "Eddy", 1, new Sword(), new Armor(Armor.ArmorType.Chestplate), "Warrior");
+        CreateSpecificCharacter(eddy, 120, 2, "Eddy", 1, new Sword(), new Armor(Armor.ArmorType.Chestplate), "Warrior", Color.blue, new Vector3(5, 1.5f, 0));
 
         // Character 2 = Barry - Bow
         var barry = new Character.PlayerCharacter();
-        CreateSpecificCharacter(barry, 70, 6, "Barry", 2, new Bow(), new Armor(Armor.ArmorType.Pants), "Ranger");
+        CreateSpecificCharacter(barry, 70, 6, "Barry", 2, new Bow(), new Armor(Armor.ArmorType.Pants), "Ranger", Color.yellow, new Vector3(0, 1.5f, 0));
 
         // Character 1 = Gandalf - Staff
         var gandalf = new Character.PlayerCharacter();
-        CreateSpecificCharacter(gandalf, 100, 12, "Gandalf", 3, new Staff(), new Armor(Armor.ArmorType.Boots), "Wizard");
+        CreateSpecificCharacter(gandalf, 100, 12, "Gandalf", 3, new Staff(), new Armor(Armor.ArmorType.Boots), "Wizard", Color.magenta, new Vector3(-5, 1.5f, 0));
 
         CharacterManager.SelectedCharacter = CharManager.CharacterList[0];
 
@@ -53,9 +54,13 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log("Characterlist contains " + character.Name +" , he is a " + character.Role + "!");
         }
+
+        MainCamera.GetComponent<CameraSwitching>().Initialize();
+
+        CharManager.MainCamera = MainCamera;
     }
 
-    void CreateSpecificCharacter(Character.PlayerCharacter player, int health, int mana, string name, int UITag, Weapon weapon, Armor armor, string role)
+    void CreateSpecificCharacter(Character.PlayerCharacter player, int health, int mana, string name, int UITag, Weapon weapon, Armor armor, string role, Color color, Vector3 position)
     {
         player.Name = name;
         player.HealthPoints = health;
@@ -66,6 +71,10 @@ public class GameManager : MonoBehaviour
         player.UpdateDefensStat();
         player.UpdateAttackStat();
         player.Role = role;
+        player.Color = color;
+        player.StartingPosition = position;
+
+        player.Initialize();
         CharManager.CharacterList.Add(player);
     }
 }

@@ -25,9 +25,26 @@ public class Character {
     // for HUD
     public int Tag = 1;
 
+    // for Material
+    public Color Color;
+
+    // for Starting position
+    public Vector3 StartingPosition;
+
     public class PlayerCharacter : Character
     {
+        public void Initialize()
+        {
+            var character = GameObject.Instantiate(Resources.Load("Prefabs/Character"), Vector3.zero, Quaternion.identity) as GameObject;
+            character.gameObject.tag = Tag.ToString();
+            character.name = "Character" + Tag;
 
+            var VisualCharacter = character.GetComponent<VisualCharacter>();
+            VisualCharacter.ColorForMaterial = Color;
+            VisualCharacter.StartingPosition = StartingPosition;
+            VisualCharacter.ThisTag = Tag;
+            VisualCharacter.Initialize();
+        }
     }
 
     public class EnemyCharacter : Character

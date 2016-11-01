@@ -9,9 +9,13 @@ public class CharacterManager {
 
     public static Character.PlayerCharacter SelectedCharacter;
 
+    // Camera
+    public GameObject MainCamera;
+
     // Use this for initialization
     public void Init () {
-
+        SelectedCharacter = CharacterList[0];
+        UpdateCamera();
     }
 	
 	// Update is called once per frame
@@ -20,14 +24,22 @@ public class CharacterManager {
 	    if (Input.GetKeyDown(KeyCode.Alpha1))
 	    {
 	        SelectedCharacter = CharacterList[0];
+	        UpdateCamera();
 	    }
         else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             SelectedCharacter = CharacterList[1];
+            UpdateCamera();
         }
         else if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             SelectedCharacter = CharacterList[2];
+            UpdateCamera();
         }
+    }
+
+    void UpdateCamera()
+    {
+        MainCamera.GetComponent<CameraSwitching>().UpdateCamera();
     }
 }
