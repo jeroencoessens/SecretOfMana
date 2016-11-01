@@ -1,19 +1,24 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class UIManager {
+public class UIManager
+{
+
+    public InventoryPanel InvPanel;
+
+    public CharacterPanel CharPanel;
 
 	// Use this for initialization
-	void Start () {
+	public void Init () {
 	
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	public void Update () {
 	
 	}
 
-    void InitializePanels()
+    public void InitializePanels()
     {
         
     }

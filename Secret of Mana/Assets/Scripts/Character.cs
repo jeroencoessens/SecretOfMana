@@ -20,12 +20,12 @@ public abstract class Character {
 
     public int DefenseStat = 250;
 
-    public class PlayerCharacter
+    public class PlayerCharacter : Character
     {
         
     }
 
-    public class EnemyCharacter
+    public class EnemyCharacter : Character
     {
 
     }

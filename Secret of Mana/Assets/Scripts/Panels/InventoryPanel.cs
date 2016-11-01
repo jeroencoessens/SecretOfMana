@@ -3,23 +3,15 @@ using System.Collections;
 
 public class InventoryPanel : ManaPanel {
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-
     // Update is called once per frame
     void Update()
     {
-
-        if (Input.GetKey(KeyCode.I))
+        if (Input.GetKeyDown(KeyCode.I))
         {
-            OpenPanel();
+            ShouldOpen = !ShouldOpen;
+
+            // Inventory for all characters
+            RefreshPanel();
         }
-    }
-
-    void OpenPanel()
-    {
-
     }
 }
