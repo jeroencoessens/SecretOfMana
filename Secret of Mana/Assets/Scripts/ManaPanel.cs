@@ -9,17 +9,7 @@ public abstract class ManaPanel : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        CurrentPanelObject.SetActive(ShouldOpen);
-    }
-
-    // Update is called once per frame
-    void Update () {
-	
-	}
-
-    void Initialize()
-    {
-        
+        CurrentPanelObject.SetActive(false);
     }
 
     public void RefreshPanel()

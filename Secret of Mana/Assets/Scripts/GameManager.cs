@@ -13,8 +13,13 @@ public class GameManager : MonoBehaviour
     // Camera
     public GameObject MainCamera;
 
+    // End game canvasses
+    public GameObject LoseCanvas;
+    public GameObject WinCanvas;
+
     // Use this for initialization
     void Start () {
+
         CreateManagers();
 	}
 	
@@ -28,10 +33,17 @@ public class GameManager : MonoBehaviour
     {
         // Character and UI managers
         CharManager = new CharacterManager();
+
+        // Create enemies
+        CreateEnemies();
+
+        // Create characters
         CreateCharacters();
         CharManager.Init();
 
+        // Panels
         UIManager = new UIManager();
+        UIManager.Init();
     }
 
     void CreateCharacters()
@@ -76,5 +88,93 @@ public class GameManager : MonoBehaviour
 
         player.Initialize();
         CharManager.CharacterList.Add(player);
+    }
+
+    void CreateSpecificEnemy(Character.EnemyCharacter enemy, int health, int mana, int tag, Vector3 position)
+    {
+        enemy.HealthPoints = health;
+        enemy.ManaPoints = mana;
+        enemy.StartingPosition = position;
+        enemy.Tag = tag;
+        enemy.CharacterWeapon = new Sword();
+        enemy.CharacterArmor = new Armor(Armor.ArmorType.Helmet);
+        enemy.UpdateDefensStat();
+        enemy.UpdateAttackStat();
+
+        enemy.Initialize();
+        CharManager.EnemyList.Add(enemy);
+    }
+
+    void CreateEnemies()
+    {
+        var enemy1 = new Character.EnemyCharacter();
+        CreateSpecificEnemy(enemy1, 50, 0, 1, new Vector3(73, 1.5f, -21));
+
+        var enemy2 = new Character.EnemyCharacter();
+        CreateSpecificEnemy(enemy2, 50, 0, 2, new Vector3(78, 1.5f, -27));
+
+        var enemy3 = new Character.EnemyCharacter();
+        CreateSpecificEnemy(enemy3, 80, 0, 3, new Vector3(65, 1.5f, -27));
+        
+        var enemy4 = new Character.EnemyCharacter();
+        CreateSpecificEnemy(enemy4, 80, 0, 4, new Vector3(65, 1.5f, -15));
+    }
+
+    public void UpdateCharacters()
+    {
+        bool gameDone = true;
+
+        // check if player 1 is still alive
+        if (GameObject.Find("Character1"))
+        {
+            CharManager.UpdateCharacters(1);
+            gameDone = false;
+        }
+
+        // check if player 2 is still alive
+        else if (GameObject.Find("Character2"))
+        {
+            CharManager.UpdateCharacters(2);
+            gameDone = false;
+        }
+
+        // check if player 3 is still alive
+        else if (GameObject.Find("Character3"))
+        {
+            CharManager.UpdateCharacters(3);
+            gameDone = false;
+        }
+
+        if (gameDone)
+        {
+            CharacterManager.AllCharactersDied = true;
+            EndGame("lost");
+        }
+    }
+
+    public void CheckAliveEnemies()
+    {
+        bool gameDone = !(GameObject.Find("Enemies").transform.childCount > 1);
+
+        Debug.Log(GameObject.Find("Enemies").transform.childCount);
+
+        if (gameDone)
+            EndGame("won");
+    }
+
+    void EndGame(string status)
+    {
+        if (status == "won")
+        {
+            WinCanvas.SetActive(true);
+            LoseCanvas.SetActive(false);
+        }
+        else if (status == "lost")
+        {
+            LoseCanvas.SetActive(true);
+            WinCanvas.SetActive(false);
+        }
+
+        Time.timeScale = 0.0f;
     }
 }

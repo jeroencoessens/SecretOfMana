@@ -3,22 +3,17 @@ using System.Collections;
 
 public class UIManager
 {
-    public InventoryPanel InvPanel;
+    private GameObject MainPanel;
 
-    public CharacterPanel CharPanel;
+    private GameObject InvPanel;
+    private GameObject CharPanel;
 
 	// Use this for initialization
-	public void Init () {
-	
-	}
-	
-	// Update is called once per frame
-	public void Update () {
-	
-	}
+	public void Init ()
+	{
+        MainPanel = GameObject.Instantiate(Resources.Load("Prefabs/Panels/Panels")) as GameObject;
 
-    public void InitializePanels()
-    {
-        
+	    InvPanel = MainPanel.transform.Find("InventoryPanel").gameObject;
+        CharPanel = MainPanel.transform.Find("CharacterPanel").gameObject;
     }
 }

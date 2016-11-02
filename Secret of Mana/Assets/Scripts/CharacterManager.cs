@@ -8,6 +8,7 @@ public class CharacterManager {
     public List<Character.EnemyCharacter> EnemyList = new List<Character.EnemyCharacter>();
 
     public static Character.PlayerCharacter SelectedCharacter;
+    public static bool AllCharactersDied = false;
 
     // Camera
     public GameObject MainCamera;
@@ -23,23 +24,38 @@ public class CharacterManager {
 
 	    if (Input.GetKeyDown(KeyCode.Alpha1))
 	    {
-	        SelectedCharacter = CharacterList[0];
-	        UpdateCamera();
+	        if (!CharacterList[0].HasDied)
+	        {
+                SelectedCharacter = CharacterList[0];
+                UpdateCamera();
+            }
 	    }
         else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            SelectedCharacter = CharacterList[1];
-            UpdateCamera();
+            if (!CharacterList[1].HasDied)
+            {
+                SelectedCharacter = CharacterList[1];
+                UpdateCamera();
+            }
         }
         else if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            SelectedCharacter = CharacterList[2];
-            UpdateCamera();
+            if (!CharacterList[2].HasDied)
+            {
+                SelectedCharacter = CharacterList[2];
+                UpdateCamera();
+            }
         }
     }
 
     void UpdateCamera()
     {
         MainCamera.GetComponent<CameraSwitching>().UpdateCamera();
+    }
+
+    public void UpdateCharacters(int player)
+    {
+        SelectedCharacter = CharacterList[player];
+        UpdateCamera();
     }
 }

@@ -31,25 +31,50 @@ public class Character {
     // for Starting position
     public Vector3 StartingPosition;
 
+    // Visual Character
+    private GameObject VisualPrefab;
+
+    // End Game
+    public bool HasDied = false;
+
     public class PlayerCharacter : Character
     {
         public void Initialize()
         {
-            var character = GameObject.Instantiate(Resources.Load("Prefabs/Character"), Vector3.zero, Quaternion.identity) as GameObject;
-            character.gameObject.tag = Tag.ToString();
-            character.name = "Character" + Tag;
+            VisualPrefab = GameObject.Instantiate(Resources.Load("Prefabs/Character"), Vector3.zero, Quaternion.identity) as GameObject;
+            VisualPrefab.gameObject.tag = Tag.ToString();
+            VisualPrefab.name = "Character" + Tag;
 
-            var VisualCharacter = character.GetComponent<VisualCharacter>();
+            var VisualCharacter = VisualPrefab.GetComponent<VisualCharacter>();
             VisualCharacter.ColorForMaterial = Color;
-            VisualCharacter.StartingPosition = StartingPosition;
             VisualCharacter.ThisTag = Tag;
+            VisualCharacter.StartingPosition = StartingPosition;
+            VisualCharacter.Health = HealthPoints;
+            VisualCharacter.AttackStat = AttackStat;
+            VisualCharacter.DefenseStat = DefenseStat;
+            VisualCharacter.ThisPlayer = this;
+
             VisualCharacter.Initialize();
         }
     }
 
     public class EnemyCharacter : Character
     {
+        public void Initialize()
+        {
+            VisualPrefab = GameObject.Instantiate(Resources.Load("Prefabs/Enemy"), Vector3.zero, Quaternion.identity) as GameObject;
+            VisualPrefab.gameObject.tag = "Enemy";
+            VisualPrefab.name = "Enemy" + Tag;
 
+            var VisualEnemy = VisualPrefab.GetComponent<VisualEnemy>();
+            VisualEnemy.StartingPosition = StartingPosition;
+            VisualEnemy.CurrentHealth = HealthPoints;
+            VisualEnemy.AttackStat = AttackStat;
+            VisualEnemy.DefenseStat = DefenseStat;
+            VisualEnemy.ThisEnemy = this;
+
+            VisualEnemy.Initialize();
+        }
     }
 
     public void UpdateAttackStat()
@@ -60,6 +85,14 @@ public class Character {
     public void UpdateDefensStat()
     {
         DefenseStat += CharacterArmor.DefenseBonus;
+    }
+
+    public Vector3 GetPosition()
+    {
+        if (VisualPrefab != null)
+            return VisualPrefab.transform.position;
+        else
+            return Vector3.zero;
     }
 }
 
