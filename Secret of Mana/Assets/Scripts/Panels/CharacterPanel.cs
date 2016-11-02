@@ -18,7 +18,9 @@ public class CharacterPanel : ManaPanel
     public Text AttackText;
     public Text DefenseText;
 
+    // More info
     public Text ArmorText;
+    public Text RoleText;
 
     void Update()
     {
@@ -54,6 +56,8 @@ public class CharacterPanel : ManaPanel
 
         AttackText.text = "ATT: " + currentCharacter.AttackStat;
         DefenseText.text = "DEF: " + currentCharacter.DefenseStat;
+
         ArmorText.text = "Armorpiece: " + currentCharacter.CharacterArmor.ArmorPiece;
+        RoleText.text = "He is a " + currentCharacter.Role;
     }
 }

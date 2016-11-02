@@ -12,6 +12,7 @@ public class VisualEnemy : MonoBehaviour {
     // Display Health
     public float CurrentHealth = 0;
     public Character.EnemyCharacter ThisEnemy;
+    private bool HasDied = false;
 
     // Attributes
     public int AttackStat = 0;
@@ -20,9 +21,14 @@ public class VisualEnemy : MonoBehaviour {
     // Reference to Game Manager
     private GameManager GameManager;
 
+    // Particles
+    private ParticleSystem HitParticle;
+    private ParticleSystem DieParticle;
+
     void Start()
     {
-        
+        HitParticle = transform.Find("HitParticle").GetComponent<ParticleSystem>();
+        DieParticle = transform.Find("DieParticle").GetComponent<ParticleSystem>();
     }
 
     public void Initialize()
@@ -44,14 +50,34 @@ public class VisualEnemy : MonoBehaviour {
 
     void OnMouseDown()
     {
-        Debug.Log("Hit " + this.name);
-        CurrentHealth -= CharacterManager.SelectedCharacter.AttackStat * 0.035f - (DefenseStat * 0.01f);
-        ThisEnemy.HealthPoints = (int) CurrentHealth;
-
-        if (CurrentHealth < 0)
+        if (CharacterManager.SelectedCharacter.CharacterWeapon.Name != "Staff")
         {
-            Destroy(gameObject);
-            GameManager.CheckAliveEnemies();
+            if (!HasDied)
+            {
+                Debug.Log("Hit " + name);
+                HitParticle.Play();
+
+                CurrentHealth -= CharacterManager.SelectedCharacter.AttackStat * 0.035f - (DefenseStat * 0.01f);
+                ThisEnemy.HealthPoints = (int)CurrentHealth;
+
+                if (CurrentHealth < 0)
+                {
+                    // Die ritual
+                    Die();
+
+                    GameManager.CheckAliveEnemies();
+                }
+            }
         }
+    }
+
+    void Die()
+    {
+        HasDied = true;
+        GetComponent<MeshRenderer>().enabled = false;
+        DieParticle.Play();
+
+        // Destroy enemy
+        Destroy(gameObject, 1.5f);
     }
 }

@@ -26,10 +26,14 @@ public class VisualCharacter : MonoBehaviour
 
     // Damage
     private float timerOnDamage = 0.0f;
+
+    // Particles ( onyl for healer )
+    private ParticleSystem HealParticles;
     
     public void Initialize()
     {
         GameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        HealParticles = transform.Find("HealParticles").GetComponent<ParticleSystem>();
 
         GetComponent<Renderer>().material.color = ColorForMaterial;
         transform.position = StartingPosition;
@@ -65,6 +69,23 @@ public class VisualCharacter : MonoBehaviour
             if (Input.GetAxisRaw("Vertical") < 0)
                 transform.Translate(0, 0, -Time.deltaTime * speed);
         }
+
+        // Healing
+	    if (CharacterManager.SelectedCharacter.CharacterWeapon.Name == "Staff")
+	    {
+	        if (Input.GetMouseButtonDown(0))
+	        {
+	            foreach (var character in GameManager.CharManager.CharacterList)
+	            {
+                    if(character.HealthPoints < 300)
+	                    character.HealthPoints += 3;
+                    else
+                        character.HealthPoints = 300;
+                }
+
+	            HealParticles.Play();
+            }
+        }
     }
 
     void OnTriggerStay(Collider other)
@@ -75,24 +96,15 @@ public class VisualCharacter : MonoBehaviour
 
             if (timerOnDamage > 0.5f)
             {
-                Debug.Log("Hit Character " + tag);
+                Debug.Log("Hit " + name);
 
                 Health -= other.GetComponent<VisualEnemy>().AttackStat*0.035f - (DefenseStat*0.01f);
                 ThisPlayer.HealthPoints = (int) Health;
 
                 if (Health < 0)
                 {
-                    // Set Camera back to zero parents ( if was main player )
-                    if(transform.Find("Main Camera") != null)
-                        transform.Find("Main Camera").parent = null;
-
-                    // Destroy this character
-                    Destroy(gameObject);
-                    ThisPlayer.HasDied = true;
-                    
-                    // Update characters
-                    if(CharacterManager.SelectedCharacter == ThisPlayer)
-                    GameManager.UpdateCharacters();
+                    // Die ritual
+                    Die();
                 }
 
                 // reset timer for next attack
@@ -107,5 +119,20 @@ public class VisualCharacter : MonoBehaviour
         {
             timerOnDamage = 0.0f;
         }
+    }
+
+    void Die()
+    {
+        // Set Camera back to zero parents ( if was main player )
+        if (transform.Find("Main Camera") != null)
+            transform.Find("Main Camera").parent = null;
+
+        // Destroy this character
+        Destroy(gameObject);
+        ThisPlayer.HasDied = true;
+
+        // Update characters
+        if (CharacterManager.SelectedCharacter == ThisPlayer)
+            GameManager.UpdateCharacters();
     }
 }

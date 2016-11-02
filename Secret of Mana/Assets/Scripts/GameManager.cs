@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
     public static Inventory Inventory;
 
     //Managers
-    private CharacterManager CharManager;
+    public static CharacterManager CharManager;
     private UIManager UIManager;
 
     // Camera
@@ -17,13 +17,11 @@ public class GameManager : MonoBehaviour
     public GameObject LoseCanvas;
     public GameObject WinCanvas;
 
-    // Use this for initialization
     void Start () {
 
         CreateManagers();
 	}
 	
-	// Update is called once per frame
 	void Update () {
 
         CharManager.Update();
@@ -68,18 +66,17 @@ public class GameManager : MonoBehaviour
         }
 
         MainCamera.GetComponent<CameraSwitching>().Initialize();
-
         CharManager.MainCamera = MainCamera;
     }
 
-    void CreateSpecificCharacter(Character.PlayerCharacter player, int health, int mana, string name, int UITag, Weapon weapon, Armor armor, string role, Color color, Vector3 position)
+    void CreateSpecificCharacter(Character.PlayerCharacter player, int health, int mana, string name, int uiTag, Weapon weapon, Armor armor, string role, Color color, Vector3 position)
     {
         player.Name = name;
         player.HealthPoints = health;
         player.ManaPoints = mana;
         player.CharacterWeapon = weapon;
         player.CharacterArmor = armor;
-        player.Tag = UITag;
+        player.Tag = uiTag;
         player.UpdateDefensStat();
         player.UpdateAttackStat();
         player.Role = role;
@@ -90,12 +87,12 @@ public class GameManager : MonoBehaviour
         CharManager.CharacterList.Add(player);
     }
 
-    void CreateSpecificEnemy(Character.EnemyCharacter enemy, int health, int mana, int tag, Vector3 position)
+    void CreateSpecificEnemy(Character.EnemyCharacter enemy, int health, int mana, int uiTag, Vector3 position)
     {
         enemy.HealthPoints = health;
         enemy.ManaPoints = mana;
         enemy.StartingPosition = position;
-        enemy.Tag = tag;
+        enemy.Tag = uiTag;
         enemy.CharacterWeapon = new Sword();
         enemy.CharacterArmor = new Armor(Armor.ArmorType.Helmet);
         enemy.UpdateDefensStat();
@@ -148,28 +145,27 @@ public class GameManager : MonoBehaviour
         if (gameDone)
         {
             CharacterManager.AllCharactersDied = true;
-            EndGame("lost");
+            EndGame(false);
         }
     }
 
     public void CheckAliveEnemies()
     {
+        // Check if the Enemies object only has one object ( this means the last remaining enemy triggered this event )
         bool gameDone = !(GameObject.Find("Enemies").transform.childCount > 1);
 
-        Debug.Log(GameObject.Find("Enemies").transform.childCount);
-
         if (gameDone)
-            EndGame("won");
+            EndGame(true);
     }
 
-    void EndGame(string status)
+    void EndGame(bool hasWon)
     {
-        if (status == "won")
+        if (hasWon)
         {
             WinCanvas.SetActive(true);
             LoseCanvas.SetActive(false);
         }
-        else if (status == "lost")
+        else if (!hasWon)
         {
             LoseCanvas.SetActive(true);
             WinCanvas.SetActive(false);
