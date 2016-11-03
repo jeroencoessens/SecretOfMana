@@ -49,7 +49,7 @@ public class Character {
             VisualCharacter.ColorForMaterial = Color;
             VisualCharacter.ThisTag = Tag;
             VisualCharacter.StartingPosition = StartingPosition;
-            VisualCharacter.Health = HealthPoints;
+            VisualCharacter.CurrentHealth = HealthPoints;
             VisualCharacter.AttackStat = AttackStat;
             VisualCharacter.DefenseStat = DefenseStat;
             VisualCharacter.ThisPlayer = this;

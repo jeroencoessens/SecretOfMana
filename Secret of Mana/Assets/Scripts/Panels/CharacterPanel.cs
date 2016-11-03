@@ -4,9 +4,6 @@ using UnityEngine.UI;
 
 public class CharacterPanel : ManaPanel
 {
-    // Current held weapon by focused Character
-    public Text WeaponText;
-
     // Name of Character
     public Text NameText;
 
@@ -19,7 +16,6 @@ public class CharacterPanel : ManaPanel
     public Text DefenseText;
 
     // More info
-    public Text ArmorText;
     public Text RoleText;
 
     void Update()
@@ -49,7 +45,6 @@ public class CharacterPanel : ManaPanel
         // Weapon, Name, HP, PP ( anything you want )
         // cached Texts:
 
-        WeaponText.text = "Weapon: " + currentCharacter.CharacterWeapon.Name;
         NameText.text = "Name: " + currentCharacter.Name;
         HPText.text = "HP: " + currentCharacter.HealthPoints;
         MPText.text = "MP: " + currentCharacter.ManaPoints;
@@ -57,7 +52,6 @@ public class CharacterPanel : ManaPanel
         AttackText.text = "ATT: " + currentCharacter.AttackStat;
         DefenseText.text = "DEF: " + currentCharacter.DefenseStat;
 
-        ArmorText.text = "Armorpiece: " + currentCharacter.CharacterArmor.ArmorPiece;
         RoleText.text = "He is a " + currentCharacter.Role;
     }
 }

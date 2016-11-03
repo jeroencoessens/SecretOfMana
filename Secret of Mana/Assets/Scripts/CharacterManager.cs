@@ -55,7 +55,7 @@ public class CharacterManager {
 
     public void UpdateCharacters(int player)
     {
-        SelectedCharacter = CharacterList[player];
+        SelectedCharacter = CharacterList[player - 1];
         UpdateCamera();
     }
 }

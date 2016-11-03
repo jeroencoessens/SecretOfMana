@@ -16,7 +16,7 @@ public class VisualCharacter : MonoBehaviour
     public int ThisTag = 0;
 
     // Attributes for End Game
-    public float Health = 0.0f;
+    public float CurrentHealth = 0.0f;
     public int AttackStat = 0;
     public int DefenseStat = 0;
     public Character.PlayerCharacter ThisPlayer;
@@ -37,6 +37,7 @@ public class VisualCharacter : MonoBehaviour
 
         GetComponent<Renderer>().material.color = ColorForMaterial;
         transform.position = StartingPosition;
+        transform.parent = GameObject.Find("Characters").transform;
 
         IsInitialized = true;
     }
@@ -98,10 +99,10 @@ public class VisualCharacter : MonoBehaviour
             {
                 Debug.Log("Hit " + name);
 
-                Health -= other.GetComponent<VisualEnemy>().AttackStat*0.035f - (DefenseStat*0.01f);
-                ThisPlayer.HealthPoints = (int) Health;
+                CurrentHealth -= (other.GetComponent<VisualEnemy>().AttackStat * 0.03f - (DefenseStat * 0.01f));
+                ThisPlayer.HealthPoints = (int) CurrentHealth;
 
-                if (Health < 0)
+                if (CurrentHealth < 0)
                 {
                     // Die ritual
                     Die();
@@ -130,9 +131,9 @@ public class VisualCharacter : MonoBehaviour
         // Destroy this character
         Destroy(gameObject);
         ThisPlayer.HasDied = true;
+        GameManager.CharManager.CharacterList.Remove(ThisPlayer);
 
         // Update characters
-        if (CharacterManager.SelectedCharacter == ThisPlayer)
-            GameManager.UpdateCharacters();
+        GameManager.UpdateCharacters(ThisTag);
     }
 }

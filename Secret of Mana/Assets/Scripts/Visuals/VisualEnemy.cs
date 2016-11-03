@@ -9,7 +9,7 @@ public class VisualEnemy : MonoBehaviour {
     // Initialized
     private bool IsInitialized = false;
 
-    // Display Health
+    // Display CurrentHealth
     public float CurrentHealth = 0;
     public Character.EnemyCharacter ThisEnemy;
     private bool HasDied = false;
@@ -57,15 +57,13 @@ public class VisualEnemy : MonoBehaviour {
                 Debug.Log("Hit " + name);
                 HitParticle.Play();
 
-                CurrentHealth -= CharacterManager.SelectedCharacter.AttackStat * 0.035f - (DefenseStat * 0.01f);
-                ThisEnemy.HealthPoints = (int)CurrentHealth;
+                CurrentHealth -= (CharacterManager.SelectedCharacter.AttackStat * 0.04f - (DefenseStat * 0.01f));
+                ThisEnemy.HealthPoints = (int) CurrentHealth;
 
                 if (CurrentHealth < 0)
                 {
                     // Die ritual
                     Die();
-
-                    GameManager.CheckAliveEnemies();
                 }
             }
         }
@@ -79,5 +77,8 @@ public class VisualEnemy : MonoBehaviour {
 
         // Destroy enemy
         Destroy(gameObject, 1.5f);
+        GameManager.CharManager.EnemyList.Remove(ThisEnemy);
+
+        GameManager.CheckAliveEnemies();
     }
 }

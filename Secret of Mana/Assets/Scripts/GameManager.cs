@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour
     void Start () {
 
         CreateManagers();
-	}
+    }
 	
 	void Update () {
 
@@ -69,6 +69,21 @@ public class GameManager : MonoBehaviour
         CharManager.MainCamera = MainCamera;
     }
 
+    void CreateEnemies()
+    {
+        var enemy1 = new Character.EnemyCharacter();
+        CreateSpecificEnemy(enemy1, 50, 0, 1, new Vector3(73, 1.5f, -21));
+
+        var enemy2 = new Character.EnemyCharacter();
+        CreateSpecificEnemy(enemy2, 50, 0, 2, new Vector3(78, 1.5f, -27));
+
+        var enemy3 = new Character.EnemyCharacter();
+        CreateSpecificEnemy(enemy3, 80, 0, 3, new Vector3(65, 1.5f, -27));
+
+        var enemy4 = new Character.EnemyCharacter();
+        CreateSpecificEnemy(enemy4, 80, 0, 4, new Vector3(65, 1.5f, -15));
+    }
+
     void CreateSpecificCharacter(Character.PlayerCharacter player, int health, int mana, string name, int uiTag, Weapon weapon, Armor armor, string role, Color color, Vector3 position)
     {
         player.Name = name;
@@ -102,47 +117,33 @@ public class GameManager : MonoBehaviour
         CharManager.EnemyList.Add(enemy);
     }
 
-    void CreateEnemies()
+    public void UpdateCharacters(int deadPlayer)
     {
-        var enemy1 = new Character.EnemyCharacter();
-        CreateSpecificEnemy(enemy1, 50, 0, 1, new Vector3(73, 1.5f, -21));
-
-        var enemy2 = new Character.EnemyCharacter();
-        CreateSpecificEnemy(enemy2, 50, 0, 2, new Vector3(78, 1.5f, -27));
-
-        var enemy3 = new Character.EnemyCharacter();
-        CreateSpecificEnemy(enemy3, 80, 0, 3, new Vector3(65, 1.5f, -27));
-        
-        var enemy4 = new Character.EnemyCharacter();
-        CreateSpecificEnemy(enemy4, 80, 0, 4, new Vector3(65, 1.5f, -15));
-    }
-
-    public void UpdateCharacters()
-    {
-        bool gameDone = true;
+        // Camera checks
 
         // check if player 1 is still alive
-        if (GameObject.Find("Character1"))
+        if (GameObject.Find("Character1") && deadPlayer != 1)
         {
+            Debug.Log("Found character 1");
             CharManager.UpdateCharacters(1);
-            gameDone = false;
         }
 
         // check if player 2 is still alive
-        else if (GameObject.Find("Character2"))
+        else if (GameObject.Find("Character2") && deadPlayer != 2)
         {
+            Debug.Log("Found character 2");
             CharManager.UpdateCharacters(2);
-            gameDone = false;
         }
 
         // check if player 3 is still alive
-        else if (GameObject.Find("Character3"))
+        else if (GameObject.Find("Character3") && deadPlayer != 3)
         {
+            Debug.Log("Found character 3");
             CharManager.UpdateCharacters(3);
-            gameDone = false;
         }
 
-        if (gameDone)
+        // Game over
+        if (CharManager.CharacterList.Count < 1)
         {
             CharacterManager.AllCharactersDied = true;
             EndGame(false);
@@ -151,14 +152,11 @@ public class GameManager : MonoBehaviour
 
     public void CheckAliveEnemies()
     {
-        // Check if the Enemies object only has one object ( this means the last remaining enemy triggered this event )
-        bool gameDone = !(GameObject.Find("Enemies").transform.childCount > 1);
-
-        if (gameDone)
+        if (CharManager.EnemyList.Count < 1)
             EndGame(true);
     }
 
-    void EndGame(bool hasWon)
+    public void EndGame(bool hasWon)
     {
         if (hasWon)
         {
