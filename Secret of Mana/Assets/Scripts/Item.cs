@@ -1,13 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public abstract class Item {
-
+public abstract class Item
+{
     public enum ItemType
     {
         Collectable,
-        Weapon
+        Weapon,
+        Armor
     }
 
     public ItemType ItemTypeMember;
+    public string Name = "Item";
+
 }

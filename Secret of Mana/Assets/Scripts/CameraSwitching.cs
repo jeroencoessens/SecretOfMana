@@ -3,23 +3,25 @@ using System.Collections;
 
 public class CameraSwitching : MonoBehaviour
 {
-    private GameObject CharacterOne;
-    private GameObject CharacterTwo;
-    private GameObject CharacterThree;
+    private GameObject _characterOne;
+    private GameObject _characterTwo;
+    private GameObject _characterThree;
 
     private bool shouldUpdate = false;
     private float timerUpdater = 0.0f;
 
+    public Transform CameraTracer;
+
 	// Use this for initialization
 	void Start () {
-	
+	    
 	}
 
     public void Initialize()
     {
-        CharacterOne = GameObject.Find("Character1");
-        CharacterTwo = GameObject.Find("Character2");
-        CharacterThree = GameObject.Find("Character3");
+        _characterOne = GameObject.Find("Character1");
+        _characterTwo = GameObject.Find("Character2");
+        _characterThree = GameObject.Find("Character3");
     }
 
     // Update is called once per frame
@@ -27,27 +29,30 @@ public class CameraSwitching : MonoBehaviour
     {
         if (shouldUpdate)
         {
-            timerUpdater += Time.deltaTime * 1.5f;
+            timerUpdater += Time.deltaTime * 1.4f;
 
             float offset = 8.0f;
 
-            if (CharacterOne != null && CharacterManager.SelectedCharacter.Tag.ToString() == CharacterOne.tag)
+            if (_characterOne != null && CharacterManager.SelectedCharacter.Tag.ToString() == _characterOne.tag)
             {
-                //transform.position = new Vector3(CharacterOne.transform.position.x, transform.position.y, CharacterOne.transform.position.z - offset);
-                transform.position = Vector3.Lerp(transform.position, new Vector3(CharacterOne.transform.position.x, transform.position.y, CharacterOne.transform.position.z - offset), timerUpdater);
-                transform.parent = CharacterOne.transform;
+                transform.position = Vector3.Lerp(transform.position, new Vector3(_characterOne.transform.position.x, transform.position.y, _characterOne.transform.position.z - offset), timerUpdater);
+                CameraTracer.position = Vector3.Lerp(CameraTracer.position, new Vector3(_characterOne.transform.position.x, CameraTracer.position.y, _characterOne.transform.position.z), timerUpdater);
+                transform.SetParent(_characterOne.transform);
+                CameraTracer.SetParent(_characterOne.transform);
             }
-            else if (CharacterTwo != null && CharacterManager.SelectedCharacter.Tag.ToString() == CharacterTwo.tag)
+            else if (_characterTwo != null && CharacterManager.SelectedCharacter.Tag.ToString() == _characterTwo.tag)
             {
-                //transform.position = new Vector3(CharacterTwo.transform.position.x, transform.position.y, CharacterTwo.transform.position.z - offset);
-                transform.position = Vector3.Lerp(transform.position, new Vector3(CharacterTwo.transform.position.x, transform.position.y, CharacterTwo.transform.position.z - offset), timerUpdater);
-                transform.parent = CharacterTwo.transform;
+                transform.position = Vector3.Lerp(transform.position, new Vector3(_characterTwo.transform.position.x, transform.position.y, _characterTwo.transform.position.z - offset), timerUpdater);
+                CameraTracer.position = Vector3.Lerp(CameraTracer.position, new Vector3(_characterTwo.transform.position.x, CameraTracer.position.y, _characterTwo.transform.position.z), timerUpdater);
+                transform.SetParent(_characterTwo.transform);
+                CameraTracer.SetParent(_characterTwo.transform);
             }
-            else if (CharacterThree != null && CharacterManager.SelectedCharacter.Tag.ToString() == CharacterThree.tag)
+            else if (_characterThree != null && CharacterManager.SelectedCharacter.Tag.ToString() == _characterThree.tag)
             {
-                //transform.position = new Vector3(CharacterThree.transform.position.x, transform.position.y, CharacterThree.transform.position.z - offset);
-                transform.position = Vector3.Lerp(transform.position, new Vector3(CharacterThree.transform.position.x, transform.position.y, CharacterThree.transform.position.z - offset), timerUpdater);
-                transform.parent = CharacterThree.transform;
+                transform.position = Vector3.Lerp(transform.position, new Vector3(_characterThree.transform.position.x, transform.position.y, _characterThree.transform.position.z - offset), timerUpdater);
+                CameraTracer.position = Vector3.Lerp(CameraTracer.position, new Vector3(_characterThree.transform.position.x, CameraTracer.position.y, _characterThree.transform.position.z), timerUpdater);
+                transform.SetParent(_characterThree.transform);
+                CameraTracer.SetParent(_characterThree.transform);
             }
 
             if (timerUpdater > 1.0f)

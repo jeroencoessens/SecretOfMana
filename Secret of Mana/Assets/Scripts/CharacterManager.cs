@@ -24,26 +24,35 @@ public class CharacterManager {
 
 	    if (Input.GetKeyDown(KeyCode.Alpha1))
 	    {
-	        if (!CharacterList[0].HasDied)
+	        if (CharacterList[0] != null)
 	        {
-                SelectedCharacter = CharacterList[0];
-                UpdateCamera();
-            }
+	            if (!CharacterList[0].HasDied)
+	            {
+	                SelectedCharacter = CharacterList[0];
+	                UpdateCamera();
+	            }
+	        }
 	    }
         else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            if (!CharacterList[1].HasDied)
+            if (CharacterList[1] != null)
             {
-                SelectedCharacter = CharacterList[1];
-                UpdateCamera();
+                if (!CharacterList[1].HasDied)
+                {
+                    SelectedCharacter = CharacterList[1];
+                    UpdateCamera();
+                }
             }
         }
         else if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            if (!CharacterList[2].HasDied)
+            if (CharacterList[2] != null)
             {
-                SelectedCharacter = CharacterList[2];
-                UpdateCamera();
+                if (!CharacterList[2].HasDied)
+                {
+                    SelectedCharacter = CharacterList[2];
+                    UpdateCamera();
+                }
             }
         }
     }
@@ -55,7 +64,17 @@ public class CharacterManager {
 
     public void UpdateCharacters(int player)
     {
-        SelectedCharacter = CharacterList[player - 1];
+        if (CharacterList[player - 1] != null)
+            SelectedCharacter = CharacterList[player - 1];
+        else
+        {
+            if(CharacterList[0] != null)
+                SelectedCharacter = CharacterList[0];
+            else if (CharacterList[1] != null)
+                SelectedCharacter = CharacterList[1];
+            else if (CharacterList[2] != null)
+                SelectedCharacter = CharacterList[2];
+        }
         UpdateCamera();
     }
 }

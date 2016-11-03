@@ -9,5 +9,6 @@ public class Bow : Weapon {
     {
         Name = "Bow";
         AttackBonus = IncreaseAttack;
+        ItemTypeMember = ItemType.Weapon;
     }
 }

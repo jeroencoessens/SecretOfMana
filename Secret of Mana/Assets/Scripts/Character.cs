@@ -49,7 +49,6 @@ public class Character {
             VisualCharacter.ColorForMaterial = Color;
             VisualCharacter.ThisTag = Tag;
             VisualCharacter.StartingPosition = StartingPosition;
-            VisualCharacter.CurrentHealth = HealthPoints;
             VisualCharacter.AttackStat = AttackStat;
             VisualCharacter.DefenseStat = DefenseStat;
             VisualCharacter.ThisPlayer = this;
@@ -68,7 +67,6 @@ public class Character {
 
             var VisualEnemy = VisualPrefab.GetComponent<VisualEnemy>();
             VisualEnemy.StartingPosition = StartingPosition;
-            VisualEnemy.CurrentHealth = HealthPoints;
             VisualEnemy.AttackStat = AttackStat;
             VisualEnemy.DefenseStat = DefenseStat;
             VisualEnemy.ThisEnemy = this;

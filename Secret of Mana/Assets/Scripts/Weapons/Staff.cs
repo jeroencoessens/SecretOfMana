@@ -8,5 +8,7 @@ public class Staff : Weapon {
     public Staff()
     {
         Name = "Staff";
+        AttackBonus = IncreaseAttack;
+        ItemTypeMember = ItemType.Weapon;
     }
 }

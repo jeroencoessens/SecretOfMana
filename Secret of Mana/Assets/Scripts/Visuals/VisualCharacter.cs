@@ -5,7 +5,6 @@ using System.Collections;
 public class VisualCharacter : MonoBehaviour
 {
     public Color ColorForMaterial;
-    public Material _material;
     public Vector3 StartingPosition;
 
     // Initialized
@@ -16,7 +15,6 @@ public class VisualCharacter : MonoBehaviour
     public int ThisTag = 0;
 
     // Attributes for End Game
-    public float CurrentHealth = 0.0f;
     public int AttackStat = 0;
     public int DefenseStat = 0;
     public Character.PlayerCharacter ThisPlayer;
@@ -47,10 +45,7 @@ public class VisualCharacter : MonoBehaviour
 	    if (!IsInitialized)
 	        return;
 
-	    if (CharacterManager.SelectedCharacter.Tag == ThisTag)
-	        SelectedCharacter = true;
-	    else
-	        SelectedCharacter = false;
+	    SelectedCharacter = CharacterManager.SelectedCharacter.Tag == ThisTag;
 
         // Movement when selected
 	    if (SelectedCharacter)
@@ -99,10 +94,9 @@ public class VisualCharacter : MonoBehaviour
             {
                 Debug.Log("Hit " + name);
 
-                CurrentHealth -= (other.GetComponent<VisualEnemy>().AttackStat * 0.03f - (DefenseStat * 0.01f));
-                ThisPlayer.HealthPoints = (int) CurrentHealth;
+                ThisPlayer.HealthPoints -= (int) (other.GetComponent<VisualEnemy>().AttackStat * 0.03f - (DefenseStat * 0.01f));
 
-                if (CurrentHealth < 0)
+                if (ThisPlayer.HealthPoints <= 0)
                 {
                     // Die ritual
                     Die();
@@ -125,13 +119,17 @@ public class VisualCharacter : MonoBehaviour
     void Die()
     {
         // Set Camera back to zero parents ( if was main player )
-        if (transform.Find("Main Camera") != null)
-            transform.Find("Main Camera").parent = null;
+        if (SelectedCharacter)
+        {
+            if (transform.Find("Main Camera") != null)
+                transform.Find("Main Camera").parent = null;
+            if (transform.Find("CameraTracer") != null)
+                transform.Find("CameraTracer").parent = null;
+        }
 
         // Destroy this character
         Destroy(gameObject);
         ThisPlayer.HasDied = true;
-        GameManager.CharManager.CharacterList.Remove(ThisPlayer);
 
         // Update characters
         GameManager.UpdateCharacters(ThisTag);

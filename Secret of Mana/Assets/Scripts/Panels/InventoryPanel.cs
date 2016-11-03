@@ -21,17 +21,36 @@ public class InventoryPanel : ManaPanel {
             //Refresh with correct Character
             RefreshPanel(CharacterManager.SelectedCharacter);
         }
-
-        // When panel open, update values
-        if (ShouldOpen)
-        {
-            RefreshPanel(CharacterManager.SelectedCharacter);
-        }
     }
 
     void RefreshPanel(Character.PlayerCharacter currentCharacter)
     {
-        WeaponText.text = "Weapon: " + currentCharacter.CharacterWeapon.Name;
-        ArmorText.text = "Armorpiece: " + currentCharacter.CharacterArmor.ArmorPiece;
+        WeaponText.text = "Weapons: ";
+        ArmorText.text = "Armor pieces: ";
+
+        // Add all items from the inventory list
+        foreach (var item in Inventory.ItemList)
+        {
+            if (item.ItemTypeMember == Item.ItemType.Weapon)
+            {
+                WeaponText.text += item.Name;
+                WeaponText.text += ", ";
+            }
+
+            if (item.ItemTypeMember == Item.ItemType.Armor)
+            {
+                ArmorText.text += item.Name;
+                ArmorText.text += ", ";
+            }
+        }
+
+        // Edit the text
+        string value = WeaponText.text;
+        value = value.Substring(0, value.Length - 2);
+        WeaponText.text = value;
+
+        value = ArmorText.text;
+        value = value.Substring(0, value.Length - 2);
+        ArmorText.text = value;
     }
 }

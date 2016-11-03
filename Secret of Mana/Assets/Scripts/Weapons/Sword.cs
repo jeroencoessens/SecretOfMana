@@ -9,5 +9,6 @@ public class Sword : Weapon
 	{
 	    Name = "Sword";
         AttackBonus = IncreaseAttack;
-    }
+        ItemTypeMember = ItemType.Weapon;
+	}
 }

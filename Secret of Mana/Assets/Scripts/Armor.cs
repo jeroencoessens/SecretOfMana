@@ -12,12 +12,29 @@ public class Armor : Item {
     }
 
     public ArmorType ArmorPiece;
-
     public int DefenseBonus = 10;
 
     public Armor(ArmorType type)
     {
         ArmorPiece = type;
+
+        switch (type)
+        {
+            case ArmorType.Helmet:
+                Name = "Helmet";
+                break;
+            case ArmorType.Chestplate:
+                Name = "Chestplate";
+                break;
+            case ArmorType.Pants:
+                Name = "Pants";
+                break;
+            case ArmorType.Boots:
+                Name = "Boots";
+                break;
+        }
+
+        ItemTypeMember = ItemType.Armor;
         UpdateDefense();
     }
 

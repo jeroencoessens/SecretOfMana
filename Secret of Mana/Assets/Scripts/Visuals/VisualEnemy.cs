@@ -6,11 +6,7 @@ public class VisualEnemy : MonoBehaviour {
 
     public Vector3 StartingPosition;
 
-    // Initialized
-    private bool IsInitialized = false;
-
     // Display CurrentHealth
-    public float CurrentHealth = 0;
     public Character.EnemyCharacter ThisEnemy;
     private bool HasDied = false;
 
@@ -36,20 +32,12 @@ public class VisualEnemy : MonoBehaviour {
         GameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
         transform.position = StartingPosition;
-        transform.parent = GameObject.Find("Enemies").transform;
-
-        IsInitialized = true;
-    }
-
-
-    // Update is called once per frame
-    void Update () {
-        if (!IsInitialized)
-            return;
+        transform.SetParent(GameObject.Find("Enemies").transform);
     }
 
     void OnMouseDown()
     {
+        // Only heroes with swords or bows can attack
         if (CharacterManager.SelectedCharacter.CharacterWeapon.Name != "Staff")
         {
             if (!HasDied)
@@ -57,10 +45,9 @@ public class VisualEnemy : MonoBehaviour {
                 Debug.Log("Hit " + name);
                 HitParticle.Play();
 
-                CurrentHealth -= (CharacterManager.SelectedCharacter.AttackStat * 0.04f - (DefenseStat * 0.01f));
-                ThisEnemy.HealthPoints = (int) CurrentHealth;
+                ThisEnemy.HealthPoints -= (int)(CharacterManager.SelectedCharacter.AttackStat * 0.04f - (DefenseStat * 0.01f));
 
-                if (CurrentHealth < 0)
+                if (ThisEnemy.HealthPoints <= 0)
                 {
                     // Die ritual
                     Die();

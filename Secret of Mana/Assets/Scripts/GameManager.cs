@@ -72,16 +72,16 @@ public class GameManager : MonoBehaviour
     void CreateEnemies()
     {
         var enemy1 = new Character.EnemyCharacter();
-        CreateSpecificEnemy(enemy1, 50, 0, 1, new Vector3(73, 1.5f, -21));
+        CreateSpecificEnemy(enemy1, 50, 0, 1, new Vector3(37, 1.5f, -22));
 
         var enemy2 = new Character.EnemyCharacter();
-        CreateSpecificEnemy(enemy2, 50, 0, 2, new Vector3(78, 1.5f, -27));
+        CreateSpecificEnemy(enemy2, 50, 0, 2, new Vector3(40, 1.5f, -28));
 
         var enemy3 = new Character.EnemyCharacter();
-        CreateSpecificEnemy(enemy3, 80, 0, 3, new Vector3(65, 1.5f, -27));
+        CreateSpecificEnemy(enemy3, 80, 0, 3, new Vector3(55, 1.5f, -30));
 
         var enemy4 = new Character.EnemyCharacter();
-        CreateSpecificEnemy(enemy4, 80, 0, 4, new Vector3(65, 1.5f, -15));
+        CreateSpecificEnemy(enemy4, 80, 0, 4, new Vector3(70, 1.5f, -25));
     }
 
     void CreateSpecificCharacter(Character.PlayerCharacter player, int health, int mana, string name, int uiTag, Weapon weapon, Armor armor, string role, Color color, Vector3 position)
@@ -97,6 +97,9 @@ public class GameManager : MonoBehaviour
         player.Role = role;
         player.Color = color;
         player.StartingPosition = position;
+
+        Inventory.ItemList.Add(weapon);
+        Inventory.ItemList.Add(armor);
 
         player.Initialize();
         CharManager.CharacterList.Add(player);
@@ -119,13 +122,14 @@ public class GameManager : MonoBehaviour
 
     public void UpdateCharacters(int deadPlayer)
     {
-        // Camera checks
+        bool gameDone = true;
 
         // check if player 1 is still alive
         if (GameObject.Find("Character1") && deadPlayer != 1)
         {
             Debug.Log("Found character 1");
             CharManager.UpdateCharacters(1);
+            gameDone = false;
         }
 
         // check if player 2 is still alive
@@ -133,6 +137,7 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log("Found character 2");
             CharManager.UpdateCharacters(2);
+            gameDone = false;
         }
 
         // check if player 3 is still alive
@@ -140,10 +145,11 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log("Found character 3");
             CharManager.UpdateCharacters(3);
+            gameDone = false;
         }
 
         // Game over
-        if (CharManager.CharacterList.Count < 1)
+        if (gameDone)
         {
             CharacterManager.AllCharactersDied = true;
             EndGame(false);
@@ -163,7 +169,7 @@ public class GameManager : MonoBehaviour
             WinCanvas.SetActive(true);
             LoseCanvas.SetActive(false);
         }
-        else if (!hasWon)
+        else
         {
             LoseCanvas.SetActive(true);
             WinCanvas.SetActive(false);
