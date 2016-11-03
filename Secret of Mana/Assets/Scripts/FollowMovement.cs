@@ -12,6 +12,7 @@ public class FollowMovement : MonoBehaviour
 	
 	void Update ()
 	{
+        // Basic movement, follow selected player
 	    if (CharacterManager.SelectedCharacter != null && !CharacterManager.AllCharactersDied)
 	        _agent.destination = CharacterManager.SelectedCharacter.GetPosition();
 	}

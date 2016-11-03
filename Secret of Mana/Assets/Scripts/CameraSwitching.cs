@@ -3,19 +3,18 @@ using System.Collections;
 
 public class CameraSwitching : MonoBehaviour
 {
+    // The three characters
     private GameObject _characterOne;
     private GameObject _characterTwo;
     private GameObject _characterThree;
 
+    // Timer info ( for smooth cycle )
     private bool shouldUpdate = false;
     private float timerUpdater = 0.0f;
+    public float CycleSpeed = 1.4f;
 
+    // Visual addition to cycle
     public Transform CameraTracer;
-
-	// Use this for initialization
-	void Start () {
-	    
-	}
 
     public void Initialize()
     {
@@ -27,12 +26,15 @@ public class CameraSwitching : MonoBehaviour
     // Update is called once per frame
     void Update ()
     {
+        // Check if should cycle
         if (shouldUpdate)
         {
-            timerUpdater += Time.deltaTime * 1.4f;
+            // Start cycle
+            timerUpdater += Time.deltaTime * CycleSpeed;
 
             float offset = 8.0f;
 
+            // Set the selected character as focus
             if (_characterOne != null && CharacterManager.SelectedCharacter.Tag.ToString() == _characterOne.tag)
             {
                 transform.position = Vector3.Lerp(transform.position, new Vector3(_characterOne.transform.position.x, transform.position.y, _characterOne.transform.position.z - offset), timerUpdater);
@@ -55,6 +57,7 @@ public class CameraSwitching : MonoBehaviour
                 CameraTracer.SetParent(_characterThree.transform);
             }
 
+            // After cycle ended, stop calculating
             if (timerUpdater > 1.0f)
             {
                 shouldUpdate = false;

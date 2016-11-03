@@ -5,21 +5,17 @@ public class Character {
 
     // Character stats ( Default )
     public string Name = "Mister Default";
-
-    public string Role = "Hero";
+    public string Role = "Peasant";
 
     public int HealthPoints = 100;
+    public int ManaPoints = 10;
 
     public int Level = 1;
 
     public Weapon CharacterWeapon;
-
     public Armor CharacterArmor;
 
-    public int ManaPoints = 10;
-
     public int AttackStat = 250;
-
     public int DefenseStat = 250;
 
     // for HUD
@@ -41,16 +37,16 @@ public class Character {
     {
         public void Initialize()
         {
+            // Spawn character prefab
             VisualPrefab = GameObject.Instantiate(Resources.Load("Prefabs/Character"), Vector3.zero, Quaternion.identity) as GameObject;
             VisualPrefab.gameObject.tag = Tag.ToString();
             VisualPrefab.name = "Character" + Tag;
 
+            // Set visual character correct attributes
             var VisualCharacter = VisualPrefab.GetComponent<VisualCharacter>();
             VisualCharacter.ColorForMaterial = Color;
             VisualCharacter.ThisTag = Tag;
             VisualCharacter.StartingPosition = StartingPosition;
-            VisualCharacter.AttackStat = AttackStat;
-            VisualCharacter.DefenseStat = DefenseStat;
             VisualCharacter.ThisPlayer = this;
 
             VisualCharacter.Initialize();
@@ -61,30 +57,34 @@ public class Character {
     {
         public void Initialize()
         {
+            // Spawn enemy prefab
             VisualPrefab = GameObject.Instantiate(Resources.Load("Prefabs/Enemy"), Vector3.zero, Quaternion.identity) as GameObject;
             VisualPrefab.gameObject.tag = "Enemy";
             VisualPrefab.name = "Enemy" + Tag;
 
+            // Set visual enemy correct attributes
             var VisualEnemy = VisualPrefab.GetComponent<VisualEnemy>();
-            VisualEnemy.StartingPosition = StartingPosition;
             VisualEnemy.AttackStat = AttackStat;
             VisualEnemy.DefenseStat = DefenseStat;
+            VisualEnemy.StartingPosition = StartingPosition;
             VisualEnemy.ThisEnemy = this;
 
             VisualEnemy.Initialize();
         }
     }
 
+    // Update attack / defense stats when equipped armor
     public void UpdateAttackStat()
     {
-        AttackStat += CharacterWeapon.AttackBonus;
+        if (CharacterWeapon != null) AttackStat += CharacterWeapon.AttackBonus;
     }
 
     public void UpdateDefensStat()
     {
-        DefenseStat += CharacterArmor.DefenseBonus;
+        if (CharacterArmor != null) DefenseStat += CharacterArmor.DefenseBonus;
     }
 
+    // Return position of the character
     public Vector3 GetPosition()
     {
         if (VisualPrefab != null)

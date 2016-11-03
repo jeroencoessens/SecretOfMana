@@ -3,6 +3,7 @@ using System.Collections;
 
 public class Armor : Item {
 
+    // Types of armor
     public enum ArmorType
     {
         Helmet,
@@ -11,12 +12,13 @@ public class Armor : Item {
         Boots
     }
 
+    // Armor specs
     public ArmorType ArmorPiece;
-    public int DefenseBonus = 10;
+    public int DefenseBonus = 0;
 
     public Armor(ArmorType type)
     {
-        ArmorPiece = type;
+        // Set to correct armor piece
 
         switch (type)
         {
@@ -35,9 +37,11 @@ public class Armor : Item {
         }
 
         ItemTypeMember = ItemType.Armor;
+        ArmorPiece = type;
         UpdateDefense();
     }
 
+    // Set correct armor specs
     void UpdateDefense()
     {
         switch (ArmorPiece)

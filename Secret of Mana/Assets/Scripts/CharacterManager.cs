@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public class CharacterManager {
 
+    // Lists of entities
     public List<Character.PlayerCharacter> CharacterList = new List<Character.PlayerCharacter>();
     public List<Character.EnemyCharacter> EnemyList = new List<Character.EnemyCharacter>();
 
@@ -15,13 +16,18 @@ public class CharacterManager {
 
     // Use this for initialization
     public void Init () {
+
+        // Player one is focused character
         SelectedCharacter = CharacterList[0];
+
+        // Set camera to focused player
         UpdateCamera();
     }
 	
 	// Update is called once per frame
 	public void Update () {
 
+        // Switch players
 	    if (Input.GetKeyDown(KeyCode.Alpha1))
 	    {
 	        if (CharacterList[0] != null)
@@ -64,6 +70,7 @@ public class CharacterManager {
 
     public void UpdateCharacters(int player)
     {
+        // Select new character to focus ( upon death of another )
         if (CharacterList[player - 1] != null)
             SelectedCharacter = CharacterList[player - 1];
         else
@@ -75,6 +82,8 @@ public class CharacterManager {
             else if (CharacterList[2] != null)
                 SelectedCharacter = CharacterList[2];
         }
+
+        // Set camera to focused player
         UpdateCamera();
     }
 }

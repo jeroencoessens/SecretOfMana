@@ -4,6 +4,7 @@ using System.Collections;
 
 public class VisualCharacter : MonoBehaviour
 {
+    // Attributes for prefabs
     public Color ColorForMaterial;
     public Vector3 StartingPosition;
 
@@ -15,8 +16,6 @@ public class VisualCharacter : MonoBehaviour
     public int ThisTag = 0;
 
     // Attributes for End Game
-    public int AttackStat = 0;
-    public int DefenseStat = 0;
     public Character.PlayerCharacter ThisPlayer;
 
     // Reference to Game Manager
@@ -30,12 +29,13 @@ public class VisualCharacter : MonoBehaviour
     
     public void Initialize()
     {
+        // Reference to Game Manager
         GameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-        HealParticles = transform.Find("HealParticles").GetComponent<ParticleSystem>();
 
         GetComponent<Renderer>().material.color = ColorForMaterial;
         transform.position = StartingPosition;
         transform.parent = GameObject.Find("Characters").transform;
+        HealParticles = transform.Find("HealParticles").GetComponent<ParticleSystem>();
 
         IsInitialized = true;
     }
@@ -66,7 +66,7 @@ public class VisualCharacter : MonoBehaviour
                 transform.Translate(0, 0, -Time.deltaTime * speed);
         }
 
-        // Healing
+        // Healing ( max 300 HP )
 	    if (CharacterManager.SelectedCharacter.CharacterWeapon.Name == "Staff")
 	    {
 	        if (Input.GetMouseButtonDown(0))
@@ -84,6 +84,7 @@ public class VisualCharacter : MonoBehaviour
         }
     }
 
+    // Trigger for damage
     void OnTriggerStay(Collider other)
     {
         if (other.CompareTag("Enemy"))
@@ -92,9 +93,10 @@ public class VisualCharacter : MonoBehaviour
 
             if (timerOnDamage > 0.5f)
             {
-                Debug.Log("Hit " + name);
+                Debug.Log(name + " got hit by " + other.name + "!");
 
-                ThisPlayer.HealthPoints -= (int) (other.GetComponent<VisualEnemy>().AttackStat * 0.03f - (DefenseStat * 0.01f));
+                // Apply damage
+                ThisPlayer.HealthPoints -= (int) (other.GetComponent<VisualEnemy>().AttackStat * 0.03f - (ThisPlayer.DefenseStat * 0.01f));
 
                 if (ThisPlayer.HealthPoints <= 0)
                 {
@@ -118,7 +120,7 @@ public class VisualCharacter : MonoBehaviour
 
     void Die()
     {
-        // Set Camera back to zero parents ( if was main player )
+        // Set Camera back to parentless ( if was main player )
         if (SelectedCharacter)
         {
             if (transform.Find("Main Camera") != null)
@@ -130,6 +132,10 @@ public class VisualCharacter : MonoBehaviour
         // Destroy this character
         Destroy(gameObject);
         ThisPlayer.HasDied = true;
+
+        // Delete character items from inventory
+        Inventory.ItemList.Remove(ThisPlayer.CharacterWeapon);
+        Inventory.ItemList.Remove(ThisPlayer.CharacterArmor);
 
         // Update characters
         GameManager.UpdateCharacters(ThisTag);

@@ -19,14 +19,17 @@ public class InventoryPanel : ManaPanel {
             RefreshPanel();
 
             //Refresh with correct Character
-            RefreshPanel(CharacterManager.SelectedCharacter);
+            UpdatePanel("");
         }
-    }
 
-    void RefreshPanel(Character.PlayerCharacter currentCharacter)
+        if(ShouldOpen)
+            UpdatePanel("");
+    }
+    
+    void UpdatePanel(string overrideStr)
     {
-        WeaponText.text = "Weapons: ";
-        ArmorText.text = "Armor pieces: ";
+        WeaponText.text = overrideStr;
+        ArmorText.text = overrideStr;
 
         // Add all items from the inventory list
         foreach (var item in Inventory.ItemList)
@@ -45,12 +48,18 @@ public class InventoryPanel : ManaPanel {
         }
 
         // Edit the text
-        string value = WeaponText.text;
-        value = value.Substring(0, value.Length - 2);
-        WeaponText.text = value;
+        if (WeaponText.text.Length > 2)
+        {
+            string value = WeaponText.text;
+            value = value.Substring(0, value.Length - 2);
+            WeaponText.text = value;
+        }
 
-        value = ArmorText.text;
-        value = value.Substring(0, value.Length - 2);
-        ArmorText.text = value;
+        if (ArmorText.text.Length > 2)
+        {
+            string value = ArmorText.text;
+            value = value.Substring(0, value.Length - 2);
+            ArmorText.text = value;
+        }
     }
 }

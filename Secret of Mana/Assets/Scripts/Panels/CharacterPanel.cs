@@ -33,12 +33,10 @@ public class CharacterPanel : ManaPanel
 
         // When panel open, update values
         if (ShouldOpen)
-        {
             RefreshPanel(CharacterManager.SelectedCharacter);
-        }
     }
 
-    // overload for character
+    // update for selected character ( overload for the sake of overloading, no real difference )
     void RefreshPanel(Character.PlayerCharacter currentCharacter)
     {
         // update text:

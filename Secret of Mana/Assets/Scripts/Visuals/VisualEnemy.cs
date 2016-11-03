@@ -10,7 +10,7 @@ public class VisualEnemy : MonoBehaviour {
     public Character.EnemyCharacter ThisEnemy;
     private bool HasDied = false;
 
-    // Attributes
+    // Attack stat
     public int AttackStat = 0;
     public int DefenseStat = 0;
 
@@ -21,20 +21,19 @@ public class VisualEnemy : MonoBehaviour {
     private ParticleSystem HitParticle;
     private ParticleSystem DieParticle;
 
-    void Start()
-    {
-        HitParticle = transform.Find("HitParticle").GetComponent<ParticleSystem>();
-        DieParticle = transform.Find("DieParticle").GetComponent<ParticleSystem>();
-    }
-
     public void Initialize()
     {
+        // Reference to Game Manager
         GameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+
+        HitParticle = transform.Find("HitParticle").GetComponent<ParticleSystem>();
+        DieParticle = transform.Find("DieParticle").GetComponent<ParticleSystem>();
 
         transform.position = StartingPosition;
         transform.SetParent(GameObject.Find("Enemies").transform);
     }
 
+    // Damage enemies by clicking ( left mouse )
     void OnMouseDown()
     {
         // Only heroes with swords or bows can attack
@@ -42,9 +41,11 @@ public class VisualEnemy : MonoBehaviour {
         {
             if (!HasDied)
             {
-                Debug.Log("Hit " + name);
+                Debug.Log(CharacterManager.SelectedCharacter.Name + " hit " + name + "!");
+
                 HitParticle.Play();
 
+                // Apply damage
                 ThisEnemy.HealthPoints -= (int)(CharacterManager.SelectedCharacter.AttackStat * 0.04f - (DefenseStat * 0.01f));
 
                 if (ThisEnemy.HealthPoints <= 0)
@@ -66,6 +67,7 @@ public class VisualEnemy : MonoBehaviour {
         Destroy(gameObject, 1.5f);
         GameManager.CharManager.EnemyList.Remove(ThisEnemy);
 
+        // Check if there are still enemies to be killed!
         GameManager.CheckAliveEnemies();
     }
 }
