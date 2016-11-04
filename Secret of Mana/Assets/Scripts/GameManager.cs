@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -26,6 +27,13 @@ public class GameManager : MonoBehaviour
 
         // Update that character manager ( input )
         CharManager.Update();
+
+        // Reset
+	    if (Input.GetKeyDown(KeyCode.R))
+	    {
+	        Time.timeScale = 1.0f;
+	        SceneManager.LoadScene(0);
+	    }
 	}
 
     void CreateManagers()

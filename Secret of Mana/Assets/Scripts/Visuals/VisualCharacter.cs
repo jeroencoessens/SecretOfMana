@@ -138,6 +138,7 @@ public class VisualCharacter : MonoBehaviour
         Inventory.ItemList.Remove(ThisPlayer.CharacterArmor);
 
         // Update characters
-        GameManager.UpdateCharacters(ThisTag);
+        if(SelectedCharacter)
+            GameManager.UpdateCharacters(ThisTag);
     }
 }
