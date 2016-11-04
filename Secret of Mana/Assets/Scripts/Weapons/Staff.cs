@@ -12,4 +12,16 @@ public class Staff : Weapon {
         AttackBonus = IncreaseAttack;
         ItemTypeMember = ItemType.Weapon;
     }
+
+    public override void Behaviour()
+    {
+        Debug.Log("heal");
+        foreach (var character in GameManager.CharManager.CharacterList)
+        {
+            if (character.HealthPoints < 300)
+                character.HealthPoints += 3;
+            else
+                character.HealthPoints = 300;
+        }
+    }
 }

@@ -65,21 +65,23 @@ public class VisualCharacter : MonoBehaviour
             if (Input.GetAxisRaw("Vertical") < 0)
                 transform.Translate(0, 0, -Time.deltaTime * speed);
         }
+        
+        // Weapon behaviour
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (ThisPlayer == CharacterManager.SelectedCharacter)
+            {
+                if (CharacterManager.SelectedCharacter.CharacterWeapon.Name == "Bow")
+                    ThisPlayer.CharacterWeapon.Behaviour(this);
 
-        // Healing ( max 300 HP )
-	    if (CharacterManager.SelectedCharacter.CharacterWeapon.Name == "Staff")
-	    {
-	        if (Input.GetMouseButtonDown(0))
-	        {
-	            foreach (var character in GameManager.CharManager.CharacterList)
-	            {
-                    if(character.HealthPoints < 300)
-	                    character.HealthPoints += 3;
-                    else
-                        character.HealthPoints = 300;
-                }
+                else if (CharacterManager.SelectedCharacter.CharacterWeapon.Name == "Sword")
+                    ThisPlayer.CharacterWeapon.Behaviour();
+            }
 
-	            HealParticles.Play();
+            if (CharacterManager.SelectedCharacter.CharacterWeapon.Name == "Staff")
+            {
+                ThisPlayer.CharacterWeapon.Behaviour();
+                HealParticles.Play();
             }
         }
     }
@@ -89,6 +91,8 @@ public class VisualCharacter : MonoBehaviour
     {
         if (other.CompareTag("Enemy"))
         {
+            CharacterManager.SelectedCharacter.CanAttack = true;
+
             timerOnDamage += Time.deltaTime;
 
             if (timerOnDamage > 0.5f)
@@ -115,6 +119,7 @@ public class VisualCharacter : MonoBehaviour
         if (other.CompareTag("Enemy"))
         {
             timerOnDamage = 0.0f;
+            CharacterManager.SelectedCharacter.CanAttack = false;
         }
     }
 

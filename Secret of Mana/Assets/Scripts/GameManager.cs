@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
 
     //Managers
     public static CharacterManager CharManager;
-    private UIManager UIManager;
+    public static UIManager UIManager;
 
     // Camera
     public GameObject MainCamera;
@@ -126,6 +126,7 @@ public class GameManager : MonoBehaviour
         enemy.StartingPosition = position;
         enemy.Tag = uiTag;
         enemy.CharacterWeapon = new Sword();
+        enemy.CharacterWeapon.AttackBonus = 60;
         enemy.CharacterArmor = new Armor(Armor.ArmorType.Helmet);
         enemy.UpdateDefensStat();
         enemy.UpdateAttackStat();

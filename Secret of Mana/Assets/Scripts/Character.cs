@@ -17,6 +17,9 @@ public class Character {
 
     public int AttackStat = 250;
     public int DefenseStat = 250;
+    
+    //Attack ( for weapon behaviour )
+    public bool CanAttack = false;
 
     // for HUD
     public int Tag = 1;

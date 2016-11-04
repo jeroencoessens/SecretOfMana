@@ -4,8 +4,9 @@ using UnityEngine.UI;
 
 public class CharacterPanel : ManaPanel
 {
-    // Name of Character
+    // Name of Character + Weapon
     public Text NameText;
+    public Text WeaponText;
 
     // Current HP & MP of Character
     public Text HPText;
@@ -24,7 +25,7 @@ public class CharacterPanel : ManaPanel
         {
             ShouldOpen = !ShouldOpen;
 
-            // Normal refresh
+            // Normal refresh ( open/close )
             RefreshPanel();
 
             //Refresh with correct Character
@@ -44,6 +45,8 @@ public class CharacterPanel : ManaPanel
         // cached Texts:
 
         NameText.text = "Name: " + currentCharacter.Name;
+        WeaponText.text = "Weapon: " + currentCharacter.CharacterWeapon.Name;
+
         HPText.text = "HP: " + currentCharacter.HealthPoints;
         MPText.text = "MP: " + currentCharacter.ManaPoints;
 

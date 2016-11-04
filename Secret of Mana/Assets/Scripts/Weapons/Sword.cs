@@ -4,7 +4,7 @@ using System.Collections;
 public class Sword : Weapon
 {
     // Sword is a strong close range weapon, useless at long range
-    private int IncreaseAttack = 60;
+    private int IncreaseAttack = 120;
 
 	public Sword ()
 	{
@@ -12,4 +12,9 @@ public class Sword : Weapon
         AttackBonus = IncreaseAttack;
         ItemTypeMember = ItemType.Weapon;
 	}
+
+    public override void Behaviour()
+    {
+        
+    }
 }

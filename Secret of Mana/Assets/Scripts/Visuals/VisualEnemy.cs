@@ -36,24 +36,23 @@ public class VisualEnemy : MonoBehaviour {
     // Damage enemies by clicking ( left mouse )
     void OnMouseDown()
     {
-        // Only heroes with swords or bows can attack
-        if (CharacterManager.SelectedCharacter.CharacterWeapon.Name != "Staff")
+        // Only heroes with swords can directly hit if within distance
+        if (CharacterManager.SelectedCharacter.CharacterWeapon.Name == "Sword" && CharacterManager.SelectedCharacter.CanAttack)
         {
             if (!HasDied)
             {
-                Debug.Log(CharacterManager.SelectedCharacter.Name + " hit " + name + "!");
-
-                HitParticle.Play();
-
-                // Apply damage
-                ThisEnemy.HealthPoints -= (int)(CharacterManager.SelectedCharacter.AttackStat * 0.04f - (DefenseStat * 0.01f));
-
-                if (ThisEnemy.HealthPoints <= 0)
-                {
-                    // Die ritual
-                    Die();
-                }
+                Hit();
             }
+        }
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        // Only heroes with bows ( rangers ) can shoot arrows
+        if (other.CompareTag("Arrow") && !HasDied)
+        {
+            Destroy(other.gameObject);
+            Hit();
         }
     }
 
@@ -69,5 +68,20 @@ public class VisualEnemy : MonoBehaviour {
 
         // Check if there are still enemies to be killed!
         GameManager.CheckAliveEnemies();
+    }
+
+    void Hit()
+    {
+        Debug.Log(CharacterManager.SelectedCharacter.Name + " hit " + name + "!");
+
+        HitParticle.Play();
+
+        ThisEnemy.HealthPoints -= (int)(CharacterManager.SelectedCharacter.AttackStat * 0.04f - (DefenseStat * 0.01f));
+
+        if (ThisEnemy.HealthPoints <= 0)
+        {
+            // Die ritual
+            Die();
+        }
     }
 }

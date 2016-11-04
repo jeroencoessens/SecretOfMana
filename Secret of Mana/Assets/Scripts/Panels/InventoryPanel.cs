@@ -15,7 +15,7 @@ public class InventoryPanel : ManaPanel {
         {
             ShouldOpen = !ShouldOpen;
 
-            // Inventory for all characters
+            // Normal refresh ( open/close )
             RefreshPanel();
 
             //Refresh with correct Character
