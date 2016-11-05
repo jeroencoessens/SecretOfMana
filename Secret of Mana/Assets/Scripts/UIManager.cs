@@ -10,6 +10,6 @@ public class UIManager
 	public void Init ()
 	{
         // Spawn canvas ( with panels )
-        MainPanel = GameObject.Instantiate(Resources.Load("Prefabs/Panels/Panels")) as GameObject;
+        MainPanel = GameObject.Instantiate(Resources.Load("Prefabs/Panels")) as GameObject;
     }
 }

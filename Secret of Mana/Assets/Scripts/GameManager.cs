@@ -125,8 +125,7 @@ public class GameManager : MonoBehaviour
         enemy.ManaPoints = mana;
         enemy.StartingPosition = position;
         enemy.Tag = uiTag;
-        enemy.CharacterWeapon = new Sword();
-        enemy.CharacterWeapon.AttackBonus = 60;
+        enemy.CharacterWeapon = new Sword {AttackBonus = 60};
         enemy.CharacterArmor = new Armor(Armor.ArmorType.Helmet);
         enemy.UpdateDefensStat();
         enemy.UpdateAttackStat();

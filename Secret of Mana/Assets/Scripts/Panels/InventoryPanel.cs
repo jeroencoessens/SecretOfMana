@@ -50,14 +50,14 @@ public class InventoryPanel : ManaPanel {
         // Edit the text
         if (WeaponText.text.Length > 2)
         {
-            string value = WeaponText.text;
+            var value = WeaponText.text;
             value = value.Substring(0, value.Length - 2);
             WeaponText.text = value;
         }
 
         if (ArmorText.text.Length > 2)
         {
-            string value = ArmorText.text;
+            var value = ArmorText.text;
             value = value.Substring(0, value.Length - 2);
             ArmorText.text = value;
         }

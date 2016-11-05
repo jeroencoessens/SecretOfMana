@@ -8,26 +8,26 @@ public class VisualEnemy : MonoBehaviour {
 
     // Display CurrentHealth
     public Character.EnemyCharacter ThisEnemy;
-    private bool HasDied = false;
+    private bool _hasDied = false;
 
     // Attack stat
     public int AttackStat = 0;
     public int DefenseStat = 0;
 
     // Reference to Game Manager
-    private GameManager GameManager;
+    private GameManager _gameManager;
 
     // Particles
-    private ParticleSystem HitParticle;
-    private ParticleSystem DieParticle;
+    private ParticleSystem _hitParticles;
+    private ParticleSystem _dieParticles;
 
     public void Initialize()
     {
         // Reference to Game Manager
-        GameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
-        HitParticle = transform.Find("HitParticle").GetComponent<ParticleSystem>();
-        DieParticle = transform.Find("DieParticle").GetComponent<ParticleSystem>();
+        _hitParticles = transform.Find("HitParticle").GetComponent<ParticleSystem>();
+        _dieParticles = transform.Find("DieParticle").GetComponent<ParticleSystem>();
 
         transform.position = StartingPosition;
         transform.SetParent(GameObject.Find("Enemies").transform);
@@ -39,7 +39,7 @@ public class VisualEnemy : MonoBehaviour {
         // Only heroes with swords can directly hit if within distance
         if (CharacterManager.SelectedCharacter.CharacterWeapon.Name == "Sword" && CharacterManager.SelectedCharacter.CanAttack)
         {
-            if (!HasDied)
+            if (!_hasDied)
             {
                 Hit();
             }
@@ -49,7 +49,7 @@ public class VisualEnemy : MonoBehaviour {
     void OnTriggerEnter(Collider other)
     {
         // Only heroes with bows ( rangers ) can shoot arrows
-        if (other.CompareTag("Arrow") && !HasDied)
+        if (other.CompareTag("Arrow") && !_hasDied)
         {
             Destroy(other.gameObject);
             Hit();
@@ -58,23 +58,25 @@ public class VisualEnemy : MonoBehaviour {
 
     void Die()
     {
-        HasDied = true;
-        GetComponent<MeshRenderer>().enabled = false;
-        DieParticle.Play();
+        Debug.Log(name + " died!");
 
-        // Destroy enemy
+        _hasDied = true;
+        GetComponent<MeshRenderer>().enabled = false;
+        _dieParticles.Play();
+
+        // Destroy enemy and remove from list
         Destroy(gameObject, 1.5f);
         GameManager.CharManager.EnemyList.Remove(ThisEnemy);
 
         // Check if there are still enemies to be killed!
-        GameManager.CheckAliveEnemies();
+        _gameManager.CheckAliveEnemies();
     }
 
     void Hit()
     {
         Debug.Log(CharacterManager.SelectedCharacter.Name + " hit " + name + "!");
 
-        HitParticle.Play();
+        _hitParticles.Play();
 
         ThisEnemy.HealthPoints -= (int)(CharacterManager.SelectedCharacter.AttackStat * 0.04f - (DefenseStat * 0.01f));
 

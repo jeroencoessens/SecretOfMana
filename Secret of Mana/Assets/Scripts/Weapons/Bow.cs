@@ -7,8 +7,8 @@ public class Bow : Weapon {
     private int IncreaseAttack = 25;
 
     // Arrow
-    private GameObject _arrowPrefab;
-    private Transform _arrowsCirculating;
+    private readonly GameObject _arrowPrefab;
+    private readonly Transform _arrowsCirculating;
 
     public Bow()
     {
@@ -22,8 +22,8 @@ public class Bow : Weapon {
 
     public override void Behaviour(VisualCharacter character)
     {
-        float speed = 45.0f;
-        float dist;
+        var speed = 45.0f;
+        var dist = 0.0f;
         Vector3 pos = Vector3.zero;
 
         // Shooting plane
@@ -39,9 +39,12 @@ public class Bow : Weapon {
 
         // Spawn arrow
         var arrow = GameObject.Instantiate(_arrowPrefab, character.transform.position + (shootDirection.normalized * 2.0f), Quaternion.identity) as GameObject;
-        arrow.transform.SetParent(_arrowsCirculating);
+        if (arrow != null)
+        {
+            arrow.transform.SetParent(_arrowsCirculating);
 
-        // Fire arrow
-        arrow.GetComponent<Rigidbody>().velocity = shootDirection * (speed / shootDirection.magnitude);
+            // Fire arrow
+            arrow.GetComponent<Rigidbody>().velocity = shootDirection * (speed / shootDirection.magnitude);
+        }
     }
 }

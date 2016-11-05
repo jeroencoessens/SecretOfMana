@@ -9,7 +9,7 @@ public class VisualCharacter : MonoBehaviour
     public Vector3 StartingPosition;
 
     // Initialized
-    private bool IsInitialized = false;
+    private bool _isInitialized = false;
 
     // Camera and selection of characters
     public bool SelectedCharacter = false;
@@ -17,71 +17,78 @@ public class VisualCharacter : MonoBehaviour
 
     // Attributes for End Game
     public Character.PlayerCharacter ThisPlayer;
+    private bool _hasDied = false;
 
     // Reference to Game Manager
-    private GameManager GameManager;
+    private GameManager _gameManager;
 
     // Damage
-    private float timerOnDamage = 0.0f;
+    private float _timerOnDamage = 0.0f;
 
-    // Particles ( onyl for healer )
-    private ParticleSystem HealParticles;
+    // Particles
+    private ParticleSystem _healParticles;
+    private ParticleSystem _dieParticles;
     
     public void Initialize()
     {
         // Reference to Game Manager
-        GameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
         GetComponent<Renderer>().material.color = ColorForMaterial;
         transform.position = StartingPosition;
         transform.parent = GameObject.Find("Characters").transform;
-        HealParticles = transform.Find("HealParticles").GetComponent<ParticleSystem>();
 
-        IsInitialized = true;
+        _healParticles = transform.Find("HealParticles").GetComponent<ParticleSystem>();
+        _dieParticles = transform.Find("DieParticles").GetComponent<ParticleSystem>();
+
+        _isInitialized = true;
     }
 	
 	void Update ()
 	{
-	    if (!IsInitialized)
+	    if (!_isInitialized)
 	        return;
 
-	    SelectedCharacter = CharacterManager.SelectedCharacter.Tag == ThisTag;
-
-        // Movement when selected
-	    if (SelectedCharacter)
+	    if (!_hasDied)
 	    {
-            float speed = 5.0f;
+            SelectedCharacter = CharacterManager.SelectedCharacter.Tag == ThisTag;
 
-            // Movement ( arrows & WASD )
-            if (Input.GetAxisRaw("Horizontal") > 0)
-                transform.Translate(Time.deltaTime * speed, 0, 0);
-
-            if (Input.GetAxisRaw("Horizontal") < 0)
-                transform.Translate(-Time.deltaTime * speed, 0, 0);
-
-            if (Input.GetAxisRaw("Vertical") > 0)
-                transform.Translate(0, 0, Time.deltaTime * speed);
-
-            if (Input.GetAxisRaw("Vertical") < 0)
-                transform.Translate(0, 0, -Time.deltaTime * speed);
-        }
-        
-        // Weapon behaviour
-        if (Input.GetMouseButtonDown(0))
-        {
-            if (ThisPlayer == CharacterManager.SelectedCharacter)
+            // Movement when selected
+            if (SelectedCharacter)
             {
-                if (CharacterManager.SelectedCharacter.CharacterWeapon.Name == "Bow")
-                    ThisPlayer.CharacterWeapon.Behaviour(this);
+                var speed = 5.0f;
 
-                else if (CharacterManager.SelectedCharacter.CharacterWeapon.Name == "Sword")
-                    ThisPlayer.CharacterWeapon.Behaviour();
+                // Movement ( arrows & WASD )
+                if (Input.GetAxisRaw("Horizontal") > 0)
+                    transform.Translate(Time.deltaTime * speed, 0, 0);
+
+                if (Input.GetAxisRaw("Horizontal") < 0)
+                    transform.Translate(-Time.deltaTime * speed, 0, 0);
+
+                if (Input.GetAxisRaw("Vertical") > 0)
+                    transform.Translate(0, 0, Time.deltaTime * speed);
+
+                if (Input.GetAxisRaw("Vertical") < 0)
+                    transform.Translate(0, 0, -Time.deltaTime * speed);
             }
 
-            if (CharacterManager.SelectedCharacter.CharacterWeapon.Name == "Staff")
+            // Weapon behaviour
+            if (Input.GetMouseButtonDown(0))
             {
-                ThisPlayer.CharacterWeapon.Behaviour();
-                HealParticles.Play();
+                if (ThisPlayer == CharacterManager.SelectedCharacter)
+                {
+                    if (CharacterManager.SelectedCharacter.CharacterWeapon.Name == "Bow")
+                        ThisPlayer.CharacterWeapon.Behaviour(this);
+
+                    else if (CharacterManager.SelectedCharacter.CharacterWeapon.Name == "Sword")
+                        ThisPlayer.CharacterWeapon.Behaviour();
+                }
+
+                if (CharacterManager.SelectedCharacter.CharacterWeapon.Name == "Staff")
+                {
+                    ThisPlayer.CharacterWeapon.Behaviour();
+                    _healParticles.Play();
+                }
             }
         }
     }
@@ -89,13 +96,13 @@ public class VisualCharacter : MonoBehaviour
     // Trigger for damage
     void OnTriggerStay(Collider other)
     {
-        if (other.CompareTag("Enemy"))
+        if (other.CompareTag("Enemy") && !_hasDied)
         {
             CharacterManager.SelectedCharacter.CanAttack = true;
 
-            timerOnDamage += Time.deltaTime;
+            _timerOnDamage += Time.deltaTime;
 
-            if (timerOnDamage > 0.5f)
+            if (_timerOnDamage > 0.5f)
             {
                 Debug.Log(name + " got hit by " + other.name + "!");
 
@@ -109,7 +116,7 @@ public class VisualCharacter : MonoBehaviour
                 }
 
                 // reset timer for next attack
-                timerOnDamage = 0.0f;
+                _timerOnDamage = 0.0f;
             }
         }
     }
@@ -118,13 +125,15 @@ public class VisualCharacter : MonoBehaviour
     {
         if (other.CompareTag("Enemy"))
         {
-            timerOnDamage = 0.0f;
+            _timerOnDamage = 0.0f;
             CharacterManager.SelectedCharacter.CanAttack = false;
         }
     }
 
     void Die()
     {
+        Debug.Log(ThisPlayer.Name + "died!");
+
         // Set Camera back to parentless ( if was main player )
         if (SelectedCharacter)
         {
@@ -134,8 +143,13 @@ public class VisualCharacter : MonoBehaviour
                 transform.Find("CameraTracer").parent = null;
         }
 
-        // Destroy this character
-        Destroy(gameObject);
+        _hasDied = true;
+        GetComponent<MeshRenderer>().enabled = false;
+        name = "Died";
+        _dieParticles.Play();
+
+        // Destroy enemy
+        Destroy(gameObject, 1.5f);
         ThisPlayer.HasDied = true;
 
         // Delete character items from inventory
@@ -144,6 +158,6 @@ public class VisualCharacter : MonoBehaviour
 
         // Update characters
         if(SelectedCharacter)
-            GameManager.UpdateCharacters(ThisTag);
+            _gameManager.UpdateCharacters(ThisTag);
     }
 }

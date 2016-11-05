@@ -15,7 +15,7 @@ public class Staff : Weapon {
 
     public override void Behaviour()
     {
-        Debug.Log("heal");
+        // Heal all characters ( 3 HP per click )
         foreach (var character in GameManager.CharManager.CharacterList)
         {
             if (character.HealthPoints < 300)

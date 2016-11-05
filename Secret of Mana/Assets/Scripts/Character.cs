@@ -31,7 +31,7 @@ public class Character {
     public Vector3 StartingPosition;
 
     // Visual Character
-    private GameObject VisualPrefab;
+    private GameObject _visualPrefab;
 
     // End Game
     public bool HasDied = false;
@@ -41,12 +41,12 @@ public class Character {
         public void Initialize()
         {
             // Spawn character prefab
-            VisualPrefab = GameObject.Instantiate(Resources.Load("Prefabs/Character"), Vector3.zero, Quaternion.identity) as GameObject;
-            VisualPrefab.gameObject.tag = Tag.ToString();
-            VisualPrefab.name = "Character" + Tag;
+            _visualPrefab = GameObject.Instantiate(Resources.Load("Prefabs/Character"), Vector3.zero, Quaternion.identity) as GameObject;
+            _visualPrefab.gameObject.tag = Tag.ToString();
+            _visualPrefab.name = "Character" + Tag;
 
             // Set visual character correct attributes
-            var VisualCharacter = VisualPrefab.GetComponent<VisualCharacter>();
+            var VisualCharacter = _visualPrefab.GetComponent<VisualCharacter>();
             VisualCharacter.ColorForMaterial = Color;
             VisualCharacter.ThisTag = Tag;
             VisualCharacter.StartingPosition = StartingPosition;
@@ -61,12 +61,12 @@ public class Character {
         public void Initialize()
         {
             // Spawn enemy prefab
-            VisualPrefab = GameObject.Instantiate(Resources.Load("Prefabs/Enemy"), Vector3.zero, Quaternion.identity) as GameObject;
-            VisualPrefab.gameObject.tag = "Enemy";
-            VisualPrefab.name = "Enemy" + Tag;
+            _visualPrefab = GameObject.Instantiate(Resources.Load("Prefabs/Enemy"), Vector3.zero, Quaternion.identity) as GameObject;
+            _visualPrefab.gameObject.tag = "Enemy";
+            _visualPrefab.name = "Enemy" + Tag;
 
             // Set visual enemy correct attributes
-            var VisualEnemy = VisualPrefab.GetComponent<VisualEnemy>();
+            var VisualEnemy = _visualPrefab.GetComponent<VisualEnemy>();
             VisualEnemy.AttackStat = AttackStat;
             VisualEnemy.DefenseStat = DefenseStat;
             VisualEnemy.StartingPosition = StartingPosition;
@@ -90,8 +90,8 @@ public class Character {
     // Return position of the character
     public Vector3 GetPosition()
     {
-        if (VisualPrefab != null)
-            return VisualPrefab.transform.position;
+        if (_visualPrefab != null)
+            return _visualPrefab.transform.position;
         else
             return Vector3.zero;
     }

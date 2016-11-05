@@ -30,35 +30,26 @@ public class CharacterManager {
         // Switch players
 	    if (Input.GetKeyDown(KeyCode.Alpha1))
 	    {
-	        if (CharacterList[0] != null)
-	        {
-	            if (!CharacterList[0].HasDied)
-	            {
-	                SelectedCharacter = CharacterList[0];
-	                UpdateCamera();
-	            }
-	        }
-	    }
+            if (CharacterList[0] != null && !CharacterList[0].HasDied)
+            {
+                SelectedCharacter = CharacterList[0];
+                UpdateCamera();
+            }
+        }
         else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            if (CharacterList[1] != null)
+            if (CharacterList[1] != null && !CharacterList[1].HasDied)
             {
-                if (!CharacterList[1].HasDied)
-                {
-                    SelectedCharacter = CharacterList[1];
-                    UpdateCamera();
-                }
+                SelectedCharacter = CharacterList[1];
+                UpdateCamera();
             }
         }
         else if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            if (CharacterList[2] != null)
+            if (CharacterList[2] != null && !CharacterList[2].HasDied)
             {
-                if (!CharacterList[2].HasDied)
-                {
-                    SelectedCharacter = CharacterList[2];
-                    UpdateCamera();
-                }
+                SelectedCharacter = CharacterList[2];
+                UpdateCamera();
             }
         }
     }

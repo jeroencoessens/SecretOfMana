@@ -40,9 +40,7 @@ public class CharacterPanel : ManaPanel
     // update for selected character ( overload for the sake of overloading, no real difference )
     void RefreshPanel(Character.PlayerCharacter currentCharacter)
     {
-        // update text:
-        // Weapon, Name, HP, PP ( anything you want )
-        // cached Texts:
+        // Update text
 
         NameText.text = "Name: " + currentCharacter.Name;
         WeaponText.text = "Weapon: " + currentCharacter.CharacterWeapon.Name;
