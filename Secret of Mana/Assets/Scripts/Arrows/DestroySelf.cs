@@ -7,4 +7,10 @@ public class DestroySelf : MonoBehaviour {
 	{
 	    Destroy(gameObject, 2.0f);
 	}
+
+    void OnTriggerEnter(Collider other)
+    {
+        if(other.CompareTag("Enemy") || other.CompareTag("Level"))
+            Destroy(gameObject);
+    }
 }
