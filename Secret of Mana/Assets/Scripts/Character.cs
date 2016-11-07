@@ -7,14 +7,18 @@ public class Character {
     public string Name = "Mister Default";
     public string Role = "Peasant";
 
+    // HP & MP
     public int HealthPoints = 100;
     public int ManaPoints = 10;
 
+    // Level, not really implemented
     public int Level = 1;
 
+    // Items
     public Weapon CharacterWeapon;
     public Armor CharacterArmor;
 
+    // Stats
     public int AttackStat = 250;
     public int DefenseStat = 250;
     
@@ -42,17 +46,20 @@ public class Character {
         {
             // Spawn character prefab
             _visualPrefab = GameObject.Instantiate(Resources.Load("Prefabs/Character"), Vector3.zero, Quaternion.identity) as GameObject;
-            _visualPrefab.gameObject.tag = Tag.ToString();
-            _visualPrefab.name = "Character" + Tag;
+            if (_visualPrefab != null)
+            {
+                _visualPrefab.gameObject.tag = Tag.ToString();
+                _visualPrefab.name = "Character" + Tag;
 
-            // Set visual character correct attributes
-            var VisualCharacter = _visualPrefab.GetComponent<VisualCharacter>();
-            VisualCharacter.ColorForMaterial = Color;
-            VisualCharacter.ThisTag = Tag;
-            VisualCharacter.StartingPosition = StartingPosition;
-            VisualCharacter.ThisPlayer = this;
+                // Set visual character correct attributes
+                var visualCharacter = _visualPrefab.GetComponent<VisualCharacter>();
+                visualCharacter.ColorForMaterial = Color;
+                visualCharacter.ThisTag = Tag;
+                visualCharacter.StartingPosition = StartingPosition;
+                visualCharacter.ThisPlayer = this;
 
-            VisualCharacter.Initialize();
+                visualCharacter.Initialize();
+            }
         }
     }
 
@@ -62,24 +69,28 @@ public class Character {
         {
             // Spawn enemy prefab
             _visualPrefab = GameObject.Instantiate(Resources.Load("Prefabs/Enemy"), Vector3.zero, Quaternion.identity) as GameObject;
-            _visualPrefab.gameObject.tag = "Enemy";
-            _visualPrefab.name = "Enemy" + Tag;
+            if (_visualPrefab != null)
+            {
+                _visualPrefab.gameObject.tag = "Enemy";
+                _visualPrefab.name = "Enemy" + Tag;
 
-            // Set visual enemy correct attributes
-            var VisualEnemy = _visualPrefab.GetComponent<VisualEnemy>();
-            VisualEnemy.AttackStat = AttackStat;
-            VisualEnemy.DefenseStat = DefenseStat;
-            VisualEnemy.StartingPosition = StartingPosition;
-            VisualEnemy.ThisEnemy = this;
+                // Set visual enemy correct attributes
+                var visualCharacter = _visualPrefab.GetComponent<VisualEnemy>();
+                visualCharacter.AttackStat = AttackStat;
+                visualCharacter.DefenseStat = DefenseStat;
+                visualCharacter.StartingPosition = StartingPosition;
+                visualCharacter.ThisEnemy = this;
 
-            VisualEnemy.Initialize();
+                visualCharacter.Initialize();
+            }
         }
     }
 
     // Update attack / defense stats when equipped armor
     public void UpdateAttackStat()
     {
-        if (CharacterWeapon != null) AttackStat += CharacterWeapon.AttackBonus;
+        if (CharacterWeapon.Name == "Staff") AttackStat = 0;
+        else if (CharacterWeapon != null) AttackStat += CharacterWeapon.AttackBonus;
     }
 
     public void UpdateDefensStat()

@@ -4,19 +4,8 @@ using System.Collections;
 
 public class VisualCharacter : MonoBehaviour
 {
-    // Attributes for prefabs
-    public Color ColorForMaterial;
-    public Vector3 StartingPosition;
-
     // Initialized
     private bool _isInitialized = false;
-
-    // Camera and selection of characters
-    public bool SelectedCharacter = false;
-    public int ThisTag = 0;
-
-    // Attributes for End Game
-    public Character.PlayerCharacter ThisPlayer;
     private bool _hasDied = false;
 
     // Reference to Game Manager
@@ -28,12 +17,24 @@ public class VisualCharacter : MonoBehaviour
     // Particles
     private ParticleSystem _healParticles;
     private ParticleSystem _dieParticles;
+
+    // Attributes for prefabs
+    public Color ColorForMaterial;
+    public Vector3 StartingPosition;
+    
+    // Camera and selection of characters
+    public bool SelectedCharacter = false;
+    public int ThisTag = 0;
+
+    // Attributes for End Game
+    public Character.PlayerCharacter ThisPlayer;
     
     public void Initialize()
     {
         // Reference to Game Manager
         _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
+        // Set character under characters tab
         GetComponent<Renderer>().material.color = ColorForMaterial;
         transform.position = StartingPosition;
         transform.parent = GameObject.Find("Characters").transform;
@@ -56,7 +57,7 @@ public class VisualCharacter : MonoBehaviour
             // Movement when selected
             if (SelectedCharacter)
             {
-                var speed = 5.0f;
+                var speed = 6.0f;
 
                 // Movement ( arrows & WASD )
                 if (Input.GetAxisRaw("Horizontal") > 0)
@@ -75,6 +76,7 @@ public class VisualCharacter : MonoBehaviour
             // Weapon behaviour
             if (Input.GetMouseButtonDown(0))
             {
+                // Attacking characters
                 if (ThisPlayer == CharacterManager.SelectedCharacter)
                 {
                     if (CharacterManager.SelectedCharacter.CharacterWeapon.Name == "Bow")
@@ -84,6 +86,7 @@ public class VisualCharacter : MonoBehaviour
                         ThisPlayer.CharacterWeapon.Behaviour();
                 }
 
+                // Supporting Character
                 if (CharacterManager.SelectedCharacter.CharacterWeapon.Name == "Staff")
                 {
                     ThisPlayer.CharacterWeapon.Behaviour();
@@ -98,15 +101,17 @@ public class VisualCharacter : MonoBehaviour
     {
         if (other.CompareTag("Enemy") && !_hasDied)
         {
+            // Enemy is close enough for attack
             CharacterManager.SelectedCharacter.CanAttack = true;
 
             _timerOnDamage += Time.deltaTime;
 
+            // Enemy hits every 0.5 seconds
             if (_timerOnDamage > 0.5f)
             {
                 Debug.Log(name + " got hit by " + other.name + "!");
 
-                // Apply damage
+                // Decrease health
                 ThisPlayer.HealthPoints -= (int) (other.GetComponent<VisualEnemy>().AttackStat * 0.03f - (ThisPlayer.DefenseStat * 0.01f));
 
                 if (ThisPlayer.HealthPoints <= 0)
@@ -123,6 +128,7 @@ public class VisualCharacter : MonoBehaviour
 
     void OnTriggerExit(Collider other)
     {
+        // No enemy is close enough
         if (other.CompareTag("Enemy"))
         {
             _timerOnDamage = 0.0f;
@@ -149,7 +155,7 @@ public class VisualCharacter : MonoBehaviour
         _dieParticles.Play();
 
         // Destroy enemy
-        Destroy(gameObject, 1.5f);
+        Destroy(gameObject, 0.8f);
         ThisPlayer.HasDied = true;
 
         // Delete character items from inventory

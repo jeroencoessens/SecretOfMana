@@ -7,6 +7,7 @@ public class HUD : MonoBehaviour
     public Text SelectedCharacter;
     public Text ArrowsText;
 
+    // Current amount of arrows in scene
     private Transform _arrowsCirculating;
 
     void Start()
@@ -16,8 +17,8 @@ public class HUD : MonoBehaviour
 
 	void Update ()
 	{
+        // Update HUD
 	    SelectedCharacter.text = CharacterManager.SelectedCharacter.Tag.ToString();
 	    ArrowsText.text = _arrowsCirculating.childCount.ToString();
-
 	}
 }

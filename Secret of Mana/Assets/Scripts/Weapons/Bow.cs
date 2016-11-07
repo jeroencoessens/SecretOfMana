@@ -8,6 +8,8 @@ public class Bow : Weapon {
 
     // Arrow
     private readonly GameObject _arrowPrefab;
+
+    // Arrow holder ( hiearchy )
     private readonly Transform _arrowsCirculating;
 
     public Bow()
@@ -38,7 +40,7 @@ public class Bow : Weapon {
         Vector3 shootDirection = pos - character.transform.position;
 
         // Spawn arrow
-        var arrow = GameObject.Instantiate(_arrowPrefab, character.transform.position + (shootDirection.normalized * 2.0f), Quaternion.identity) as GameObject;
+        var arrow = GameObject.Instantiate(_arrowPrefab, character.transform.position + (shootDirection.normalized * 1.75f), Quaternion.identity) as GameObject;
         if (arrow != null)
         {
             arrow.transform.SetParent(_arrowsCirculating);

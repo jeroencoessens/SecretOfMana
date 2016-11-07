@@ -82,22 +82,22 @@ public class GameManager : MonoBehaviour
     {
         // Create some enemies ( position is kind of off due to NavMesh )
         var enemy1 = new Character.EnemyCharacter();
-        CreateSpecificEnemy(enemy1, 50, 0, 1, new Vector3(37, 1.5f, -22));
+        CreateSpecificEnemy(enemy1, 60, 0, 1, new Vector3(37, 1.5f, -22));
 
         var enemy2 = new Character.EnemyCharacter();
-        CreateSpecificEnemy(enemy2, 50, 0, 2, new Vector3(40, 1.5f, -28));
+        CreateSpecificEnemy(enemy2, 60, 0, 2, new Vector3(40, 1.5f, -28));
 
         var enemy3 = new Character.EnemyCharacter();
-        CreateSpecificEnemy(enemy3, 80, 0, 3, new Vector3(55, 1.5f, -30));
+        CreateSpecificEnemy(enemy3, 90, 0, 3, new Vector3(55, 1.5f, -30));
 
         var enemy4 = new Character.EnemyCharacter();
-        CreateSpecificEnemy(enemy4, 80, 0, 4, new Vector3(70, 1.5f, -25));
+        CreateSpecificEnemy(enemy4, 90, 0, 4, new Vector3(70, 1.5f, -25));
     }
 
-    void CreateSpecificCharacter(Character.PlayerCharacter player, int health, int mana, string name, int uiTag, Weapon weapon, Armor armor, string role, Color color, Vector3 position)
+    void CreateSpecificCharacter(Character.PlayerCharacter player, int health, int mana, string charName, int uiTag, Weapon weapon, Armor armor, string role, Color color, Vector3 position)
     {
         // Player attributes
-        player.Name = name;
+        player.Name = charName;
         player.HealthPoints = health;
         player.ManaPoints = mana;
         player.CharacterWeapon = weapon;
@@ -159,9 +159,7 @@ public class GameManager : MonoBehaviour
             CharManager.UpdateCharacters(3);
         }
         else
-        {
             CharacterManager.AllCharactersDied = true;
-        }
 
         // Else game over
         if (CharacterManager.AllCharactersDied)

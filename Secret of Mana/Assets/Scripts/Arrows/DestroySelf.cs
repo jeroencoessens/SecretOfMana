@@ -5,7 +5,7 @@ public class DestroySelf : MonoBehaviour {
 
 	void Start ()
 	{
-	    Destroy(gameObject, 2.0f);
+	    Destroy(gameObject, 3.0f);
 	}
 
     void OnTriggerEnter(Collider other)

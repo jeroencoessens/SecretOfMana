@@ -14,7 +14,7 @@ public class Armor : Item {
 
     // Armor specs
     public ArmorType ArmorPiece;
-    public int DefenseBonus = 0;
+    public int DefenseBonus;
 
     public Armor(ArmorType type)
     {
@@ -50,7 +50,7 @@ public class Armor : Item {
                 DefenseBonus = 60;
                 break;
             case ArmorType.Chestplate:
-                DefenseBonus = 120;
+                DefenseBonus = 100;
                 break;
             case ArmorType.Pants:
                 DefenseBonus = 80;

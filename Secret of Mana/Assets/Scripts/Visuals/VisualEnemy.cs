@@ -4,22 +4,25 @@ using System.Collections;
 
 public class VisualEnemy : MonoBehaviour {
 
-    public Vector3 StartingPosition;
-
-    // Display CurrentHealth
-    public Character.EnemyCharacter ThisEnemy;
-    private bool _hasDied = false;
-
-    // Attack stat
-    public int AttackStat = 0;
-    public int DefenseStat = 0;
-
     // Reference to Game Manager
     private GameManager _gameManager;
 
     // Particles
     private ParticleSystem _hitParticles;
     private ParticleSystem _dieParticles;
+
+    // Fields
+    private bool _hasDied = false;
+
+    // Properties
+    public Vector3 StartingPosition;
+
+    // Display CurrentHealth
+    public Character.EnemyCharacter ThisEnemy;
+
+    // Attack stat
+    public int AttackStat = 0;
+    public int DefenseStat = 0;
 
     public void Initialize()
     {
@@ -29,6 +32,7 @@ public class VisualEnemy : MonoBehaviour {
         _hitParticles = transform.Find("HitParticle").GetComponent<ParticleSystem>();
         _dieParticles = transform.Find("DieParticle").GetComponent<ParticleSystem>();
 
+        // Set enemy under enemies tab ( in hierarchy )
         transform.position = StartingPosition;
         transform.SetParent(GameObject.Find("Enemies").transform);
     }
@@ -65,7 +69,7 @@ public class VisualEnemy : MonoBehaviour {
         _dieParticles.Play();
 
         // Destroy enemy and remove from list
-        Destroy(gameObject, 1.5f);
+        Destroy(gameObject, 0.8f);
         GameManager.CharManager.EnemyList.Remove(ThisEnemy);
 
         // Check if there are still enemies to be killed!
@@ -78,6 +82,7 @@ public class VisualEnemy : MonoBehaviour {
 
         _hitParticles.Play();
 
+        // Decrease health
         ThisEnemy.HealthPoints -= (int)(CharacterManager.SelectedCharacter.AttackStat * 0.04f - (DefenseStat * 0.01f));
 
         if (ThisEnemy.HealthPoints <= 0)

@@ -3,6 +3,7 @@ using System.Collections;
 
 public abstract class Weapon : Item
 {
+    // Default attack bonus
     public int AttackBonus = 50;
 
     public virtual void Behaviour()
